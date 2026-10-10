@@ -1,0 +1,271 @@
+{
+  "hospital_name": "Kanakku Synthetic Hospital - Demo Unit",
+  "patient_alias": "Synthetic Patient K-03",
+  "admission_date": "2026-09-02",
+  "discharge_date": "2026-09-07",
+  "items": [
+    {
+      "id": "L001",
+      "date": "2026-09-02",
+      "category": "room",
+      "description_raw": "Private room accommodation",
+      "quantity": 7,
+      "unit": "day",
+      "unit_rate": 6800,
+      "amount": 47600.0
+    },
+    {
+      "id": "L002",
+      "date": "2026-09-03",
+      "category": "surgery",
+      "description_raw": "Orthopaedic surgeon professional fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 25000,
+      "amount": 25000.0,
+      "time": "09:00"
+    },
+    {
+      "id": "L003",
+      "date": "2026-09-03",
+      "category": "consultation",
+      "description_raw": "Assistant surgeon fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 6500,
+      "amount": 6500.0,
+      "time": "09:00"
+    },
+    {
+      "id": "L004",
+      "date": "2026-09-03",
+      "category": "anaesthesia",
+      "description_raw": "Anaesthesia service",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 8500,
+      "amount": 8500.0,
+      "time": "09:00"
+    },
+    {
+      "id": "L005",
+      "date": "2026-09-03",
+      "category": "ot",
+      "description_raw": "Orthopaedic operating theatre charge",
+      "quantity": 1,
+      "unit": "procedure",
+      "unit_rate": 19000.0,
+      "amount": 19000.0,
+      "time": "09:30"
+    },
+    {
+      "id": "L006",
+      "date": "2026-09-03",
+      "category": "consumable",
+      "description_raw": "Intramedullary nail implant set",
+      "quantity": 1,
+      "unit": "implant",
+      "unit_rate": 33500.0,
+      "amount": 33500.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L007",
+      "date": "2026-09-03",
+      "category": "consumable",
+      "description_raw": "Locking screws for implant",
+      "quantity": 2,
+      "unit": "unit",
+      "unit_rate": 6800,
+      "amount": 13600.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L008",
+      "date": "2026-09-03",
+      "category": "nursing",
+      "description_raw": "Post-operative nursing service",
+      "quantity": 6,
+      "unit": "day",
+      "unit_rate": 1600.0,
+      "amount": 9600.0
+    },
+    {
+      "id": "L009",
+      "date": "2026-09-04",
+      "category": "drug",
+      "description_raw": "TAB MOXIKEM CV 625MG",
+      "quantity": 30,
+      "unit": "tablet",
+      "unit_rate": 8.33,
+      "amount": 249.9,
+      "time": "08:00"
+    },
+    {
+      "id": "L010",
+      "date": "2026-09-03",
+      "category": "drug",
+      "description_raw": "Analgesic tablets (synthetic reference-free item)",
+      "quantity": 12,
+      "unit": "tablet",
+      "unit_rate": 85,
+      "amount": 1020.0,
+      "time": "14:00"
+    },
+    {
+      "id": "L011",
+      "date": "2026-09-03",
+      "category": "drug",
+      "description_raw": "Antiemetic injection (synthetic reference-free item)",
+      "quantity": 4,
+      "unit": "vial",
+      "unit_rate": 35,
+      "amount": 140.0,
+      "time": "14:00"
+    },
+    {
+      "id": "L012",
+      "date": "2026-09-02",
+      "category": "investigation",
+      "description_raw": "Complete blood count (CBC)",
+      "quantity": 4,
+      "unit": "test",
+      "unit_rate": 900,
+      "amount": 3600.0,
+      "time": "08:00"
+    },
+    {
+      "id": "L013",
+      "date": "2026-09-02",
+      "category": "radiology",
+      "description_raw": "X-ray femur",
+      "quantity": 3,
+      "unit": "scan",
+      "unit_rate": 1400,
+      "amount": 4200.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L014",
+      "date": "2026-09-02",
+      "category": "radiology",
+      "description_raw": "CT scan of femur",
+      "quantity": 1,
+      "unit": "scan",
+      "unit_rate": 6500,
+      "amount": 6500.0,
+      "time": "11:00"
+    },
+    {
+      "id": "L015",
+      "date": "2026-09-04",
+      "category": "blood",
+      "description_raw": "Packed red blood cells, two units",
+      "quantity": 2,
+      "unit": "unit",
+      "unit_rate": 3200,
+      "amount": 6400.0,
+      "time": "16:00"
+    },
+    {
+      "id": "L016",
+      "date": "2026-09-05",
+      "category": "physio",
+      "description_raw": "Physiotherapy session",
+      "quantity": 5,
+      "unit": "session",
+      "unit_rate": 1100,
+      "amount": 5500.0
+    },
+    {
+      "id": "L017",
+      "date": "2026-09-02",
+      "category": "investigation",
+      "description_raw": "Portable chest radiograph in emergency bay",
+      "quantity": 1,
+      "unit": "scan",
+      "unit_rate": 1200,
+      "amount": 1200.0,
+      "time": "07:00"
+    },
+    {
+      "id": "L018",
+      "date": "2026-09-03",
+      "category": "consumable",
+      "description_raw": "Orthopaedic sterile drape pack",
+      "quantity": 1,
+      "unit": "pack",
+      "unit_rate": 4500,
+      "amount": 4500.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L019",
+      "date": "2026-09-03",
+      "category": "consultation",
+      "description_raw": "Daily orthopaedic review",
+      "quantity": 4,
+      "unit": "visit",
+      "unit_rate": 1600,
+      "amount": 6400.0
+    },
+    {
+      "id": "L020",
+      "date": "2026-09-04",
+      "category": "consumable",
+      "description_raw": "Dressing and wound care supplies",
+      "quantity": 4,
+      "unit": "pack",
+      "unit_rate": 850,
+      "amount": 3400.0
+    },
+    {
+      "id": "L021",
+      "date": "2026-09-02",
+      "category": "investigation",
+      "description_raw": "Renal function panel",
+      "quantity": 2,
+      "unit": "panel",
+      "unit_rate": 1350,
+      "amount": 2700.0
+    },
+    {
+      "id": "L022",
+      "date": "2026-09-03",
+      "category": "procedure",
+      "description_raw": "Post-operative monitoring",
+      "quantity": 3,
+      "unit": "day",
+      "unit_rate": 1800.0,
+      "amount": 5400.0
+    },
+    {
+      "id": "L023",
+      "date": "2026-09-03",
+      "category": "other",
+      "description_raw": "Inpatient diet service",
+      "quantity": 6,
+      "unit": "day",
+      "unit_rate": 450.0,
+      "amount": 2700.0
+    },
+    {
+      "id": "L024",
+      "date": "2026-09-04",
+      "time": "08:00",
+      "category": "drug",
+      "description_raw": "INJ PANTOPRAZOLE 40MG IV (Pantocaf)",
+      "quantity": 2,
+      "unit": "vial",
+      "unit_rate": 16.88,
+      "amount": 33.76
+    }
+  ],
+  "stated_subtotal": 217243.66,
+  "stated_discount": 0.0,
+  "stated_total": 219643.66,
+  "currency": "INR",
+  "extraction_notes": [
+    "Synthetic data. Values are fictional and generated for a hackathon test fixture."
+  ]
+}

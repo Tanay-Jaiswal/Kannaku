@@ -1,0 +1,73 @@
+{
+  "bill_id": "bill-01",
+  "data_label": "Synthetic data",
+  "table_version": "kanakku-reference-2026-10-10-v0.2-demo",
+  "computed_from": [
+    "bill.truth.json",
+    "summary.truth.json",
+    "seed_manifest.json",
+    "../../reference/drug_reference.json"
+  ],
+  "stated_subtotal": 127140.38,
+  "sum_of_printed_line_amounts": 127140.38,
+  "stated_discount": 0,
+  "stated_total": 127140.38,
+  "total_gap": 0,
+  "seeded": [],
+  "traps": [
+    {
+      "type": "ROOM_DAYS_EXCEED_STAY",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A5",
+      "line_item_ids": [
+        "L001"
+      ],
+      "amount_formula": "room_excess_days",
+      "trap_id": "T1-ROOM-DELAYED-DISCHARGE",
+      "expected_decision": "drop",
+      "why_legit": "Free-text discharge narrative documents a delayed physical departure and one additional overnight after the formal discharge order date.",
+      "expected_amount_at_stake": 8500
+    }
+  ],
+  "decoys": [
+    {
+      "decoy_id": "DC1-1",
+      "guards_rule": "D1-A3",
+      "line_item_ids": [
+        "L007",
+        "L008"
+      ],
+      "why_legit": "Two ceftriaxone doses on the same day at 08:00 and 20:00; documented in the summary."
+    },
+    {
+      "decoy_id": "DC1-2",
+      "guards_rule": "D2-P1",
+      "line_item_ids": [
+        "L009"
+      ],
+      "canonical_id": "azithromycin_500_tab",
+      "billed_brand": "Azikaa",
+      "why_legit": "Azithromycin billed exactly at its MRP (boundary)."
+    },
+    {
+      "decoy_id": "DC1-3",
+      "guards_rule": "D3-M2",
+      "line_item_ids": [
+        "L004",
+        "L005"
+      ],
+      "why_legit": "OT and anaesthesia charges for the documented laparoscopic cholecystectomy."
+    }
+  ],
+  "evaluation_targets": {
+    "seeded_error_count": 0,
+    "trap_count": 1,
+    "expected_candidate_count": 1,
+    "expected_kept_count": 0,
+    "expected_dropped_count": 1,
+    "must_survive_count": 0,
+    "seeds_that_may_be_dropped": [],
+    "decoy_count": 3,
+    "expected_decoy_candidates": 0
+  }
+}

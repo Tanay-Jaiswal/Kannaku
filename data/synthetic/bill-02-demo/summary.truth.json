@@ -1,0 +1,38 @@
+{
+  "primary_diagnosis": "Pneumonia with sepsis (synthetic case)",
+  "secondary_diagnoses": [
+    "Acute hypoxaemic respiratory failure"
+  ],
+  "procedures_performed": [
+    {
+      "name": "Non-invasive ventilation support"
+    }
+  ],
+  "admission_date": "2026-08-10",
+  "discharge_date": "2026-08-17",
+  "ward_class": "private",
+  "icu_days": 2,
+  "ventilator_days": 2,
+  "investigations_documented": [
+    "ICU critical blood panel",
+    "Arterial blood gas (ABG)",
+    "Portable chest radiograph series",
+    "CT chest with contrast",
+    "Blood culture set",
+    "Electrolyte panel",
+    "Procalcitonin test"
+  ],
+  "medications_documented": [
+    "Azithromycin 500 mg tablet",
+    "Ceftriaxone 1 g injection",
+    "Pantoprazole 40 mg injection",
+    "Meropenem 1 g injection"
+  ],
+  "blood_products_documented": [],
+  "physio_documented": false,
+  "complications": [
+    "Sepsis",
+    "Acute hypoxaemia"
+  ],
+  "free_text_summary": "SYNTHETIC DATA. The patient spent two documented days in the ICU, followed by two days in the high-dependency / step-down unit. The billing export groups all four critical-care bed days under a single ICU care line because the export uses one critical-care service code; the bed-transfer log should confirm the unit sequence. Ventilatory support was documented for two days. Echocardiography is not listed in the structured investigations or the narrative, and no cardiac indication is documented in this synthetic summary."
+}

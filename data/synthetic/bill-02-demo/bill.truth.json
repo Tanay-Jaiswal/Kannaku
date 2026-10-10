@@ -1,0 +1,424 @@
+{
+  "hospital_name": "Kanakku Synthetic Hospital - Demo Unit",
+  "patient_alias": "Synthetic Patient K-02",
+  "admission_date": "2026-08-10",
+  "discharge_date": "2026-08-17",
+  "items": [
+    {
+      "id": "L001",
+      "date": "2026-08-10",
+      "category": "room",
+      "description_raw": "Private room accommodation",
+      "quantity": 8,
+      "unit": "day",
+      "unit_rate": 7800,
+      "amount": 62400.0
+    },
+    {
+      "id": "L002",
+      "date": "2026-08-11",
+      "category": "icu",
+      "description_raw": "Critical-care bed service (billing export groups ICU and HDU days)",
+      "quantity": 4,
+      "unit": "day",
+      "unit_rate": 11500,
+      "amount": 46000.0
+    },
+    {
+      "id": "L003",
+      "date": "2026-08-11",
+      "category": "nursing",
+      "description_raw": "ICU nursing service line",
+      "quantity": 4,
+      "unit": "day",
+      "unit_rate": 1800,
+      "amount": 8700
+    },
+    {
+      "id": "L004",
+      "date": "2026-08-10",
+      "category": "nursing",
+      "description_raw": "Ward nursing and observations",
+      "quantity": 4,
+      "unit": "day",
+      "unit_rate": 2200,
+      "amount": 8800.0
+    },
+    {
+      "id": "L005",
+      "date": "2026-08-10",
+      "category": "consultation",
+      "description_raw": "Physician rounds",
+      "quantity": 6,
+      "unit": "visit",
+      "unit_rate": 1400,
+      "amount": 8400.0
+    },
+    {
+      "id": "L006",
+      "date": "2026-08-11",
+      "category": "consultation",
+      "description_raw": "Intensivist review",
+      "quantity": 4,
+      "unit": "visit",
+      "unit_rate": 2600,
+      "amount": 10400.0
+    },
+    {
+      "id": "L007",
+      "date": "2026-08-11",
+      "category": "procedure",
+      "description_raw": "Ventilator support",
+      "quantity": 2,
+      "unit": "day",
+      "unit_rate": 9800,
+      "amount": 19600.0
+    },
+    {
+      "id": "L008",
+      "date": "2026-08-12",
+      "category": "procedure",
+      "description_raw": "High-flow oxygen support",
+      "quantity": 3,
+      "unit": "day",
+      "unit_rate": 4300,
+      "amount": 12900.0
+    },
+    {
+      "id": "L009",
+      "date": "2026-08-10",
+      "category": "investigation",
+      "description_raw": "ICU critical blood panel",
+      "quantity": 5,
+      "unit": "panel",
+      "unit_rate": 1550,
+      "amount": 7750.0
+    },
+    {
+      "id": "L010",
+      "date": "2026-08-11",
+      "category": "investigation",
+      "description_raw": "Arterial blood gas (ABG)",
+      "quantity": 6,
+      "unit": "test",
+      "unit_rate": 900,
+      "amount": 5400.0
+    },
+    {
+      "id": "L011",
+      "date": "2026-08-12",
+      "category": "radiology",
+      "description_raw": "Portable chest radiograph series",
+      "quantity": 2,
+      "unit": "scan",
+      "unit_rate": 1400,
+      "amount": 2800.0
+    },
+    {
+      "id": "L012",
+      "date": "2026-08-13",
+      "category": "investigation",
+      "description_raw": "Echocardiography with Doppler",
+      "quantity": 1,
+      "unit": "scan",
+      "unit_rate": 3600,
+      "amount": 3600.0,
+      "time": "11:00"
+    },
+    {
+      "id": "L013",
+      "date": "2026-08-12",
+      "category": "drug",
+      "description_raw": "TAB AZIKAA 500MG",
+      "quantity": 6,
+      "unit": "tablet",
+      "unit_rate": 7.16,
+      "amount": 42.96,
+      "time": "09:00"
+    },
+    {
+      "id": "L014",
+      "date": "2026-08-12",
+      "category": "drug",
+      "description_raw": "INJ C-TRI CEFTRIAXONE 1G IV",
+      "quantity": 2,
+      "unit": "vial",
+      "unit_rate": 89.43,
+      "amount": 178.86,
+      "time": "08:00"
+    },
+    {
+      "id": "L015",
+      "date": "2026-08-12",
+      "category": "drug",
+      "description_raw": "INJ PANTOPRAZOLE 40MG IV (Pantocaf)",
+      "quantity": 4,
+      "unit": "vial",
+      "unit_rate": 16.88,
+      "amount": 67.52,
+      "time": "20:00"
+    },
+    {
+      "id": "L016",
+      "date": "2026-08-11",
+      "category": "consumable",
+      "description_raw": "Normal saline IV fluid",
+      "quantity": 1,
+      "unit": "bag",
+      "unit_rate": 1250,
+      "amount": 1250.0,
+      "time": "08:00"
+    },
+    {
+      "id": "L017",
+      "date": "2026-08-11",
+      "category": "consumable",
+      "description_raw": "Normal saline IV fluid",
+      "quantity": 1,
+      "unit": "bag",
+      "unit_rate": 1250,
+      "amount": 1250.0,
+      "time": "08:00"
+    },
+    {
+      "id": "L018",
+      "date": "2026-08-10",
+      "category": "admin",
+      "description_raw": "Admission and registration fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 1500,
+      "amount": 1500.0
+    },
+    {
+      "id": "L019",
+      "date": "2026-08-11",
+      "category": "admin",
+      "description_raw": "Admission and registration fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 1500,
+      "amount": 1500.0
+    },
+    {
+      "id": "L020",
+      "date": "2026-08-11",
+      "category": "consumable",
+      "description_raw": "ICU tubing and line set",
+      "quantity": 3,
+      "unit": "set",
+      "unit_rate": 1200,
+      "amount": 3600.0
+    },
+    {
+      "id": "L021",
+      "date": "2026-08-12",
+      "category": "radiology",
+      "description_raw": "CT chest with contrast",
+      "quantity": 1,
+      "unit": "scan",
+      "unit_rate": 6800,
+      "amount": 6800.0
+    },
+    {
+      "id": "L022",
+      "date": "2026-08-11",
+      "category": "consumable",
+      "description_raw": "Syringe and cannula supply",
+      "quantity": 8,
+      "unit": "unit",
+      "unit_rate": 150,
+      "amount": 1200.0
+    },
+    {
+      "id": "L023",
+      "date": "2026-08-12",
+      "category": "investigation",
+      "description_raw": "Blood culture set",
+      "quantity": 3,
+      "unit": "set",
+      "unit_rate": 2000,
+      "amount": 6000.0
+    },
+    {
+      "id": "L024",
+      "date": "2026-08-13",
+      "category": "nursing",
+      "description_raw": "Private duty nurse coverage",
+      "quantity": 3,
+      "unit": "day",
+      "unit_rate": 2800,
+      "amount": 8400.0
+    },
+    {
+      "id": "L025",
+      "date": "2026-08-12",
+      "category": "consumable",
+      "description_raw": "Oxygen cylinder and regulator",
+      "quantity": 3,
+      "unit": "day",
+      "unit_rate": 1600,
+      "amount": 4800.0
+    },
+    {
+      "id": "L026",
+      "date": "2026-08-10",
+      "category": "consultation",
+      "description_raw": "Pulmonologist review",
+      "quantity": 6,
+      "unit": "visit",
+      "unit_rate": 2800,
+      "amount": 16800.0
+    },
+    {
+      "id": "L027",
+      "date": "2026-08-12",
+      "category": "consultation",
+      "description_raw": "Infectious disease consultation",
+      "quantity": 3,
+      "unit": "visit",
+      "unit_rate": 3000,
+      "amount": 9000.0
+    },
+    {
+      "id": "L028",
+      "date": "2026-08-12",
+      "category": "procedure",
+      "description_raw": "High-flow nasal cannula system rental",
+      "quantity": 3,
+      "unit": "day",
+      "unit_rate": 6500,
+      "amount": 19500.0
+    },
+    {
+      "id": "L029",
+      "date": "2026-08-13",
+      "category": "procedure",
+      "description_raw": "Non-invasive ventilation support",
+      "quantity": 2,
+      "unit": "day",
+      "unit_rate": 5800,
+      "amount": 11600.0
+    },
+    {
+      "id": "L030",
+      "date": "2026-08-11",
+      "category": "drug",
+      "description_raw": "INJ MEROPENEM 1G (illustrative non-reference drug)",
+      "quantity": 12,
+      "unit": "vial",
+      "unit_rate": 680,
+      "amount": 8160.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L031",
+      "date": "2026-08-12",
+      "category": "investigation",
+      "description_raw": "Repeat blood culture",
+      "quantity": 2,
+      "unit": "set",
+      "unit_rate": 1600,
+      "amount": 3200.0
+    },
+    {
+      "id": "L032",
+      "date": "2026-08-13",
+      "category": "investigation",
+      "description_raw": "Electrolyte panel",
+      "quantity": 7,
+      "unit": "panel",
+      "unit_rate": 900,
+      "amount": 6300.0
+    },
+    {
+      "id": "L033",
+      "date": "2026-08-13",
+      "category": "radiology",
+      "description_raw": "CT contrast material and consumables",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 8500,
+      "amount": 8500.0
+    },
+    {
+      "id": "L034",
+      "date": "2026-08-10",
+      "category": "other",
+      "description_raw": "Inpatient diet service",
+      "quantity": 8,
+      "unit": "day",
+      "unit_rate": 550,
+      "amount": 4400.0
+    },
+    {
+      "id": "L035",
+      "date": "2026-08-13",
+      "category": "investigation",
+      "description_raw": "Procalcitonin test",
+      "quantity": 4,
+      "unit": "test",
+      "unit_rate": 2300,
+      "amount": 9200.0
+    },
+    {
+      "id": "L036",
+      "date": "2026-08-10",
+      "category": "other",
+      "description_raw": "Pharmacy supply handling",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 1800,
+      "amount": 1800.0
+    },
+    {
+      "id": "L037",
+      "date": "2026-08-12",
+      "category": "procedure",
+      "description_raw": "Respiratory therapy sessions",
+      "quantity": 4,
+      "unit": "session",
+      "unit_rate": 1800,
+      "amount": 7200.0
+    },
+    {
+      "id": "L038",
+      "date": "2026-08-13",
+      "category": "consumable",
+      "description_raw": "Critical-care dressing pack",
+      "quantity": 5,
+      "unit": "pack",
+      "unit_rate": 950,
+      "amount": 4750.0
+    },
+    {
+      "id": "L039",
+      "date": "2026-08-14",
+      "time": "08:00",
+      "category": "drug",
+      "description_raw": "INJ C-TRI CEFTRIAXONE 1G IV",
+      "quantity": 1,
+      "unit": "vial",
+      "unit_rate": 53.0,
+      "amount": 53.0
+    },
+    {
+      "id": "L040",
+      "date": "2026-08-14",
+      "time": "20:00",
+      "category": "drug",
+      "description_raw": "INJ C-TRI CEFTRIAXONE 1G IV",
+      "quantity": 1,
+      "unit": "vial",
+      "unit_rate": 53.0,
+      "amount": 53.0
+    }
+  ],
+  "stated_subtotal": 343855.34,
+  "stated_discount": 0.0,
+  "stated_total": 343855.34,
+  "currency": "INR",
+  "extraction_notes": [
+    "Synthetic data. Values are fictional and generated for a hackathon test fixture."
+  ]
+}

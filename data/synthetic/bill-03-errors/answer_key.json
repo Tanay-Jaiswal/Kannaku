@@ -1,0 +1,158 @@
+{
+  "bill_id": "bill-03",
+  "data_label": "Synthetic data",
+  "table_version": "kanakku-reference-2026-10-10-v0.2-demo",
+  "computed_from": [
+    "bill.truth.json",
+    "summary.truth.json",
+    "seed_manifest.json",
+    "../../reference/drug_reference.json"
+  ],
+  "stated_subtotal": 217243.66,
+  "sum_of_printed_line_amounts": 217243.66,
+  "stated_discount": 0,
+  "stated_total": 219643.66,
+  "total_gap": 2400,
+  "seeded": [
+    {
+      "type": "ARITH_TOTAL",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A2",
+      "line_item_ids": [],
+      "amount_formula": "total_mismatch",
+      "description": "The stated bill total exceeds the sum of printed line amounts by a fixed amount.",
+      "seed_id": "S3-1",
+      "expected_initial_tier": "Provable",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "acceptable_decisions": [
+        "keep"
+      ],
+      "expected_amount_at_stake": 2400
+    },
+    {
+      "type": "DRUG_ABOVE_LIMIT",
+      "detector": "D2_DRUG_PRICE",
+      "rule_id": "D2-P1",
+      "line_item_ids": [
+        "L009"
+      ],
+      "amount_formula": "price_limit_excess",
+      "canonical_id": "amoxclav_625_tab",
+      "billed_brand": "Moxikem CV",
+      "description": "High-quantity drug line is billed at nominally 1.18x the table MRP, rounded to cents.",
+      "seed_id": "S3-2",
+      "expected_initial_tier": "Provable",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "acceptable_decisions": [
+        "keep"
+      ],
+      "expected_amount_at_stake": 38.15,
+      "computed_initial_tier": "Provable",
+      "binding_basis": "reference_mrp",
+      "reference_verified": true
+    },
+    {
+      "type": "ROOM_DAYS_EXCEED_STAY",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A5",
+      "line_item_ids": [
+        "L001"
+      ],
+      "amount_formula": "room_excess_days",
+      "description": "Room quantity is nights plus two, with no discharge-delay explanation in the summary.",
+      "seed_id": "S3-3",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "acceptable_decisions": [
+        "keep"
+      ],
+      "expected_amount_at_stake": 6800
+    },
+    {
+      "type": "MISMATCH_NOT_IN_SUMMARY",
+      "detector": "D3_BILL_VS_SUMMARY",
+      "rule_id": "D3-M2",
+      "line_item_ids": [
+        "L015"
+      ],
+      "amount_formula": "line_amount_sum",
+      "description": "Two units of blood are billed but the summary documents no blood products.",
+      "seed_id": "S3-4",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "acceptable_decisions": [
+        "keep"
+      ],
+      "expected_amount_at_stake": 6400
+    },
+    {
+      "type": "MISMATCH_NOT_IN_SUMMARY",
+      "detector": "D3_BILL_VS_SUMMARY",
+      "rule_id": "D3-M2",
+      "line_item_ids": [
+        "L016"
+      ],
+      "amount_formula": "line_amount_sum",
+      "description": "Physiotherapy sessions are billed but physio_documented is false and the free text gives no support.",
+      "seed_id": "S3-5",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "acceptable_decisions": [
+        "keep"
+      ],
+      "expected_amount_at_stake": 5500
+    }
+  ],
+  "traps": [
+    {
+      "type": "MISMATCH_NOT_IN_SUMMARY",
+      "detector": "D3_BILL_VS_SUMMARY",
+      "rule_id": "D3-M2",
+      "line_item_ids": [
+        "L017"
+      ],
+      "amount_formula": "line_amount_sum",
+      "trap_id": "T3-CXR-IN-FREE-TEXT",
+      "expected_decision": "drop",
+      "why_legit": "Portable chest radiograph is absent from the structured investigations array but explicitly documented in free_text_summary as completed in the emergency bay.",
+      "expected_amount_at_stake": 1200
+    }
+  ],
+  "decoys": [
+    {
+      "decoy_id": "DC3-1",
+      "guards_rule": "D1-A3",
+      "line_item_ids": [
+        "L006",
+        "L007"
+      ],
+      "why_legit": "Implant set and locking screws are different items, billed once each."
+    },
+    {
+      "decoy_id": "DC3-2",
+      "guards_rule": "D2-P1",
+      "line_item_ids": [
+        "L024"
+      ],
+      "canonical_id": "pantoprazole_40_inj",
+      "billed_brand": "Pantocaf",
+      "why_legit": "Pantoprazole billed exactly at its MRP (boundary)."
+    }
+  ],
+  "evaluation_targets": {
+    "seeded_error_count": 5,
+    "trap_count": 1,
+    "expected_candidate_count": 6,
+    "expected_kept_count": 5,
+    "expected_dropped_count": 1,
+    "must_survive_count": 5,
+    "seeds_that_may_be_dropped": [],
+    "decoy_count": 2,
+    "expected_decoy_candidates": 0
+  }
+}

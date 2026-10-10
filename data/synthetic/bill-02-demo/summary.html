@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>bill-02-demo Synthetic Discharge Summary</title><style>
+@page { size: A4; margin: 14mm 13mm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; color: #17212b; margin: 0; font-size: 11px; line-height: 1.4; }
+.banner { border: 2px solid #263746; padding: 8px 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+.banner strong { font-size: 13px; letter-spacing: .08em; }
+.banner span { font-size: 10px; font-weight: bold; text-transform: uppercase; }
+h1 { font-size: 21px; margin: 5px 0 4px; }
+h2 { font-size: 13px; border-bottom: 1px solid #cbd5df; padding-bottom: 4px; margin: 16px 0 7px; }
+.sub { color: #576575; font-size: 10px; }
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 20px; margin: 12px 0; }
+.meta div { border-bottom: 1px solid #e1e6eb; padding: 4px 0; }
+.meta b { display: inline-block; min-width: 120px; }
+table { border-collapse: collapse; width: 100%; margin-top: 9px; }
+th { background: #edf2f6; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; }
+th, td { border-bottom: 1px solid #d9e0e6; padding: 5px 5px; vertical-align: top; }
+.num { text-align: right; white-space: nowrap; }
+.total-wrap { margin-left: auto; width: 48%; margin-top: 12px; }
+.total-wrap div { display:flex; justify-content:space-between; border-bottom: 1px solid #e1e6eb; padding: 5px 0; }
+.total-wrap .grand { font-size: 16px; font-weight: bold; border-top: 2px solid #263746; margin-top: 4px; }
+.note { background: #f4f7f9; border-left: 3px solid #64748b; padding: 8px 10px; margin: 12px 0; }
+.footer { margin-top: 18px; padding-top: 8px; border-top: 1px solid #cbd5df; font-size: 9px; color: #536170; }
+@media print { .no-print { display: none; } }
+</style></head><body>
+<div class="banner"><strong>KANAKKU SYNTHETIC HOSPITAL</strong><span>Synthetic data · demo only</span></div>
+<h1>Discharge Summary</h1><div class="sub">Fixture: bill-02-demo · Training document, not a real clinical record</div>
+<div class="meta"><div><b>Patient alias</b> Synthetic Patient K-02</div><div><b>Admission date</b> 2026-08-10</div><div><b>Discharge date</b> 2026-08-17</div><div><b>Ward class</b> private</div><div><b>ICU days (structured)</b> 2</div><div><b>Ventilator days</b> 2</div></div>
+<h2>Primary diagnosis</h2><p>Pneumonia with sepsis (synthetic case)</p>
+<h2>Secondary diagnoses</h2><ul><li>Acute hypoxaemic respiratory failure</li></ul>
+<h2>Procedures performed</h2><ul><li>Non-invasive ventilation support</li></ul>
+<h2>Investigations documented (structured list)</h2><ul><li>ICU critical blood panel</li><li>Arterial blood gas (ABG)</li><li>Portable chest radiograph series</li><li>CT chest with contrast</li><li>Blood culture set</li><li>Electrolyte panel</li><li>Procalcitonin test</li></ul>
+<h2>Medications documented</h2><ul><li>Azithromycin 500 mg tablet</li><li>Ceftriaxone 1 g injection</li><li>Pantoprazole 40 mg injection</li><li>Meropenem 1 g injection</li></ul>
+<h2>Blood products documented</h2><ul><li>None documented</li></ul>
+<h2>Physiotherapy documented</h2><p>No</p>
+<h2>Complications</h2><ul><li>Sepsis</li><li>Acute hypoxaemia</li></ul>
+<h2>Hospital course / free text</h2><p>SYNTHETIC DATA. The patient spent two documented days in the ICU, followed by two days in the high-dependency / step-down unit. The billing export groups all four critical-care bed days under a single ICU care line because the export uses one critical-care service code; the bed-transfer log should confirm the unit sequence. Ventilatory support was documented for two days. Echocardiography is not listed in the structured investigations or the narrative, and no cardiac indication is documented in this synthetic summary.</p>
+<div class="note"><b>Training fixture.</b> This is synthetic data generated for Kanakku's hackathon tests. It is not a real discharge summary and must not be used to infer any real person's medical history.</div>
+<div class="footer">Generated for Kanakku hackathon testing · All patient and provider information is fictional.</div></body></html>

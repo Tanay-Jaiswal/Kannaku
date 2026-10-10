@@ -1,0 +1,33 @@
+{
+  "primary_diagnosis": "Femur fracture after a fall (synthetic case)",
+  "secondary_diagnoses": [
+    "Closed displaced femoral shaft fracture"
+  ],
+  "procedures_performed": [
+    {
+      "name": "Open reduction and internal fixation with intramedullary nail",
+      "date": "2026-09-03"
+    }
+  ],
+  "admission_date": "2026-09-02",
+  "discharge_date": "2026-09-07",
+  "ward_class": "semi-private",
+  "icu_days": 0,
+  "ventilator_days": 0,
+  "investigations_documented": [
+    "Complete blood count (CBC)",
+    "X-ray femur",
+    "CT scan of femur",
+    "Renal function panel"
+  ],
+  "medications_documented": [
+    "Amoxicillin + clavulanic acid 625 mg tablet",
+    "Analgesic tablets",
+    "Antiemetic injection",
+    "Pantoprazole 40 mg injection"
+  ],
+  "blood_products_documented": [],
+  "physio_documented": false,
+  "complications": [],
+  "free_text_summary": "SYNTHETIC DATA. Femur fixation was completed on 2026-09-03. No ICU stay or blood products are described in the clinical course, and physiotherapy is not mentioned. A portable chest radiograph was obtained in the emergency bay before transfer to the orthopaedic ward; it is documented in this narrative but was omitted from the structured investigations list. There is no note of a discharge delay beyond the discharge date."
+}

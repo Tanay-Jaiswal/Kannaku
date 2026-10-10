@@ -1,0 +1,435 @@
+{
+  "table_version": "kanakku-reference-2026-10-10-v0.2-demo",
+  "curated_on": "2026-10-10",
+  "disclaimer": "Reference table, hand-curated, verify before real use. Synthetic demo. Reference data for a synthetic hackathon demonstration. Verify all values and classifications before any real-world use.",
+  "rows": [
+    {
+      "canonical_id": "paracetamol_650_tab",
+      "generic_name": "Paracetamol",
+      "brand_examples": [
+        "Paralup"
+      ],
+      "aliases": [
+        "PARA 650",
+        "PCM 650"
+      ],
+      "form": "tablet",
+      "strength": "650 mg",
+      "route": "oral",
+      "table_unit": "tablet",
+      "pack_size": 15,
+      "allowed_pack_sizes": [
+        15
+      ],
+      "mrp_per_pack": 27.3,
+      "ceiling_price_per_unit": 2.05,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-08-27; S.O. 1575(E), 2026-03-25; effective 2026-04-01; https://dc.kerala.gov.in/wp-content/uploads/2026/09/NPPA-UPDATED-PRICE-LIST-AS-ON-27-08-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://counterfoil.in/medicines/molecule/paracetamol/ (NPPA-derived brand-price record; exact pack independently spot-check pending)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": false,
+      "notes": "Illustrative reference value for demo, not official. Ceiling record is sourced; exact 15-tablet brand-pack MRP still needs independent pharmacy/manufacturer spot-check. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "paracetamol_1g_100ml_inf",
+      "generic_name": "Paracetamol",
+      "brand_examples": [],
+      "aliases": [
+        "PCM INF",
+        "PARACETAMOL IV"
+      ],
+      "form": "infusion",
+      "strength": "1 g/100 ml",
+      "route": "IV",
+      "table_unit": "bag",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "pantoprazole_40_inj",
+      "generic_name": "Pantoprazole",
+      "brand_examples": [
+        "Pantocaf"
+      ],
+      "aliases": [
+        "PANTOP 40",
+        "INJ PANTOP 40MG IV",
+        "PANTOP",
+        "PAN 40 INJ"
+      ],
+      "form": "injection",
+      "strength": "40 mg",
+      "route": "intravenous",
+      "table_unit": "vial",
+      "pack_size": 1,
+      "allowed_pack_sizes": [
+        1
+      ],
+      "mrp_per_pack": 16.88,
+      "ceiling_price_per_unit": 51.66,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-08-27; S.O. 1575(E), 2026-03-25; effective 2026-04-01; https://dc.kerala.gov.in/wp-content/uploads/2026/09/NPPA-UPDATED-PRICE-LIST-AS-ON-27-08-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://counterfoil.in/medicines/molecule/pantoprazole/ (NPPA-derived brand-price record; Pantocaf, listed as one vial)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": true,
+      "notes": "Research output identifies Pantocaf as one vial with MRP Rs 16.88. Ceiling is per vial, so units align. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "ceftriaxone_1g_inj",
+      "generic_name": "Ceftriaxone",
+      "brand_examples": [
+        "C-Tri"
+      ],
+      "aliases": [
+        "CEFTRIAXONE 1G",
+        "INJ CEFTRIAXONE 1GM",
+        "CEFTRI 1G",
+        "INJ CTX"
+      ],
+      "form": "injection",
+      "strength": "1000 mg",
+      "route": "intravenous/intramuscular",
+      "table_unit": "vial",
+      "pack_size": 1,
+      "allowed_pack_sizes": [
+        1
+      ],
+      "mrp_per_pack": 53.0,
+      "ceiling_price_per_unit": 63.88,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-08-27; S.O. 1575(E), 2026-03-25; effective 2026-04-01; https://dc.kerala.gov.in/wp-content/uploads/2026/09/NPPA-UPDATED-PRICE-LIST-AS-ON-27-08-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://www.pingmedoc.com/pharmacy/medicine/c-tri-1gm-inj-vial (pharmacy listing, one vial; MRP Rs 53)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": true,
+      "notes": "Current consolidated ceiling listed as Rs 63.88 per vial; candidate brand C-Tri listing gives MRP Rs 53 per vial. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification. Form as listed in source: powder for injection.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "piptaz_4_5g_inj",
+      "generic_name": "Piperacillin + Tazobactam",
+      "brand_examples": [],
+      "aliases": [
+        "PIPTAZ",
+        "PIP-TAZ 4.5"
+      ],
+      "form": "injection",
+      "strength": "4.5 g",
+      "route": "IV",
+      "table_unit": "vial",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "meropenem_1g_inj",
+      "generic_name": "Meropenem",
+      "brand_examples": [],
+      "aliases": [
+        "MERO 1G"
+      ],
+      "form": "injection",
+      "strength": "1 g",
+      "route": "IV",
+      "table_unit": "vial",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "ondansetron_4mg_inj",
+      "generic_name": "Ondansetron",
+      "brand_examples": [
+        "Onsett"
+      ],
+      "aliases": [
+        "ONDANSETRON 4MG INJ",
+        "ONDANSETRON 2MG/ML",
+        "ONDEM INJ",
+        "OND 4"
+      ],
+      "form": "injection",
+      "strength": "4 mg per 2 mL (2 mg/mL)",
+      "route": "intravenous/intramuscular",
+      "table_unit": "ml",
+      "pack_size": 2,
+      "allowed_pack_sizes": [
+        2
+      ],
+      "mrp_per_pack": 6.0,
+      "ceiling_price_per_unit": 6.1,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-05-27; Ondansetron Injection 2mg/mL at Rs 6.10 per mL; https://dc.kerala.gov.in/wp-content/uploads/2026/06/NPPA-UPDATED-PRICE-LIST-AS-ON-27-05-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://pharmeasy.in/online-medicine-order/onsett-4mg-inj-2ml-56577 (pharmacy listing; MRP lead Rs 6 per 2mL ampoule)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": false,
+      "notes": "Illustrative reference value for demo, not official. Ceiling is per mL; 4mg/2mL ampoule means 2mL. Exact listing/notification linkage and MRP need final check. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "tramadol_50mg_inj",
+      "generic_name": "Tramadol",
+      "brand_examples": [],
+      "aliases": [
+        "TRAMADOL INJ"
+      ],
+      "form": "injection",
+      "strength": "50 mg/ml",
+      "route": "IV/IM",
+      "table_unit": "ampoule",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "enoxaparin_40mg_syringe",
+      "generic_name": "Enoxaparin",
+      "brand_examples": [],
+      "aliases": [
+        "ENOX 40",
+        "CLEXANE 40"
+      ],
+      "form": "injection",
+      "strength": "40 mg/0.4 ml",
+      "route": "SC",
+      "table_unit": "syringe",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "amoxclav_625_tab",
+      "generic_name": "Amoxicillin + Clavulanic acid",
+      "brand_examples": [
+        "Moxikem CV"
+      ],
+      "aliases": [
+        "AMOXY CLAV 625",
+        "AMOXCLAV 625",
+        "AUGMENTIN 625",
+        "AMOX-CLAV 625"
+      ],
+      "form": "tablet",
+      "strength": "500 mg + 125 mg",
+      "route": "oral",
+      "table_unit": "tablet",
+      "pack_size": 6,
+      "allowed_pack_sizes": [
+        6
+      ],
+      "mrp_per_pack": 42.35,
+      "ceiling_price_per_unit": 18.74,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-08-27; S.O. 1575(E), 2026-03-25; effective 2026-04-01; https://dc.kerala.gov.in/wp-content/uploads/2026/09/NPPA-UPDATED-PRICE-LIST-AS-ON-27-08-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://counterfoil.in/medicines/molecule/amoxycillin-clavulanic-acid/ (NPPA-derived brand-price record; Moxikem CV, six-tablet pack)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": true,
+      "notes": "MRP per unit is rounded from Rs 42.35 / 6 = Rs 7.0583 to Rs 7.06 for the two-decimal currency schema. Ceiling is per tablet. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "azithromycin_500_tab",
+      "generic_name": "Azithromycin",
+      "brand_examples": [
+        "Azikaa"
+      ],
+      "aliases": [
+        "AZI 500",
+        "AZITHRO 500",
+        "AZEE 500",
+        "AZITHRAL 500"
+      ],
+      "form": "tablet",
+      "strength": "500 mg",
+      "route": "oral",
+      "table_unit": "tablet",
+      "pack_size": 6,
+      "allowed_pack_sizes": [
+        6
+      ],
+      "mrp_per_pack": 34.38,
+      "ceiling_price_per_unit": 24.14,
+      "gst_pct": 5,
+      "ceiling_source_ref": "Kerala Drugs Controller, NPPA updated price list 2026-08-27; S.O. 1575(E), 2026-03-25; effective 2026-04-01; https://dc.kerala.gov.in/wp-content/uploads/2026/09/NPPA-UPDATED-PRICE-LIST-AS-ON-27-08-2026.pdf",
+      "nlem_scheduled": true,
+      "mrp_source": "https://counterfoil.in/medicines/molecule/azithromycin/ (NPPA-derived brand-price record; Azikaa, six-tablet pack)",
+      "source_retrieved_on": "2026-10-10",
+      "verified": true,
+      "notes": "MRP per tablet is Rs 34.38 / 6 = Rs 5.73. Ceiling is per tablet. GST source: Notification No. 9/2025-Integrated Tax (Rate), Schedule I, entry 226; subject to final product classification.",
+      "gst_source_ref": "https://courier.cbic.gov.in/ECCS/advisory/2025/NOTIFICATION%20NO.%209_2025-INTEGRATED%20TAX%20%28RATE%29%20-1759486719.pdf",
+      "gst_source_note": "Notification No. 9/2025-Integrated Tax (Rate), 17 Sep 2025, Schedule I, entry 226 (5% for drugs/medicines and formulations, except specified nil-rated items); verify final HSN/product classification for production use."
+    },
+    {
+      "canonical_id": "metronidazole_500mg_100ml_inf",
+      "generic_name": "Metronidazole",
+      "brand_examples": [],
+      "aliases": [
+        "METROGYL IV",
+        "METRO INF"
+      ],
+      "form": "infusion",
+      "strength": "500 mg/100 ml",
+      "route": "IV",
+      "table_unit": "bag",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "nacl_09_500ml_inf",
+      "generic_name": "Sodium chloride 0.9%",
+      "brand_examples": [],
+      "aliases": [
+        "NS 500",
+        "NORMAL SALINE"
+      ],
+      "form": "infusion",
+      "strength": "500 ml",
+      "route": "IV",
+      "table_unit": "bag",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "ringer_lactate_500ml_inf",
+      "generic_name": "Ringer lactate",
+      "brand_examples": [],
+      "aliases": [
+        "RL 500",
+        "RINGER LACT"
+      ],
+      "form": "infusion",
+      "strength": "500 ml",
+      "route": "IV",
+      "table_unit": "bag",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "diclofenac_75mg_inj",
+      "generic_name": "Diclofenac",
+      "brand_examples": [],
+      "aliases": [
+        "VOVERAN INJ",
+        "DICLO INJ"
+      ],
+      "form": "injection",
+      "strength": "75 mg/3 ml",
+      "route": "IM",
+      "table_unit": "ampoule",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    },
+    {
+      "canonical_id": "noradrenaline_4mg_inj",
+      "generic_name": "Noradrenaline",
+      "brand_examples": [],
+      "aliases": [
+        "NORAD",
+        "NORADRENALINE INJ"
+      ],
+      "form": "injection",
+      "strength": "4 mg/4 ml",
+      "route": "IV",
+      "table_unit": "ampoule",
+      "pack_size": null,
+      "allowed_pack_sizes": [],
+      "mrp_per_pack": null,
+      "ceiling_price_per_unit": null,
+      "gst_pct": null,
+      "ceiling_source_ref": null,
+      "nlem_scheduled": null,
+      "mrp_source": null,
+      "source_retrieved_on": null,
+      "verified": false,
+      "notes": "Not in round 1: leave unverified and unused in seeds."
+    }
+  ]
+}

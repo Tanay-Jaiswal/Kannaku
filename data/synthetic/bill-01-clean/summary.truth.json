@@ -1,0 +1,30 @@
+{
+  "primary_diagnosis": "Symptomatic gallstones (synthetic case)",
+  "secondary_diagnoses": [
+    "Biliary colic"
+  ],
+  "procedures_performed": [
+    {
+      "name": "Laparoscopic cholecystectomy",
+      "date": "2026-08-02"
+    }
+  ],
+  "admission_date": "2026-08-01",
+  "discharge_date": "2026-08-04",
+  "ward_class": "private",
+  "icu_days": 0,
+  "ventilator_days": 0,
+  "investigations_documented": [
+    "Complete blood count (CBC)",
+    "Liver function panel",
+    "Ultrasound abdomen"
+  ],
+  "medications_documented": [
+    "Ceftriaxone 1 g injection, morning and evening doses on 2026-08-02",
+    "Azithromycin 500 mg tablets"
+  ],
+  "blood_products_documented": [],
+  "physio_documented": false,
+  "complications": [],
+  "free_text_summary": "SYNTHETIC DATA. Laparoscopic cholecystectomy was completed on 2026-08-02. The patient had no ICU stay and no blood products were given. Two ceftriaxone doses were administered at different times on the same day. Discharge was medically ordered on 2026-08-04, but transport was unavailable until the following morning; the patient remained in the room overnight and physically left on 2026-08-05. The structured discharge_date records the order date, while the extra overnight is documented in this narrative."
+}

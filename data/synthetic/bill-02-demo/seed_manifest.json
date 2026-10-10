@@ -1,0 +1,155 @@
+{
+  "bill_id": "bill-02",
+  "seeded": [
+    {
+      "seed_id": "S2-1",
+      "type": "ARITH_LINE",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A1",
+      "line_item_ids": [
+        "L003"
+      ],
+      "amount_formula": "line_arithmetic_excess",
+      "expected_initial_tier": "Provable",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "description": "ICU nursing line amount is inflated by a fixed amount relative to printed quantity and rate."
+    },
+    {
+      "seed_id": "S2-2",
+      "type": "DRUG_ABOVE_LIMIT",
+      "detector": "D2_DRUG_PRICE",
+      "rule_id": "D2-P1",
+      "line_item_ids": [
+        "L013"
+      ],
+      "canonical_id": "azithromycin_500_tab",
+      "amount_formula": "price_limit_excess",
+      "expected_initial_tier": "Provable",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "description": "Scheduled, reference-listed drug billed at nominally 1.25x MRP (rate rounded to cents) while below the GST-inclusive ceiling.",
+      "billed_brand": "Azikaa"
+    },
+    {
+      "seed_id": "S2-3",
+      "type": "DRUG_ABOVE_LIMIT",
+      "detector": "D2_DRUG_PRICE",
+      "rule_id": "D2-P1",
+      "line_item_ids": [
+        "L014"
+      ],
+      "canonical_id": "ceftriaxone_1g_inj",
+      "amount_formula": "price_limit_excess",
+      "expected_initial_tier": "Provable",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "description": "Scheduled drug billed at nominally 1.40x ex-GST ceiling (rounded to cents), above the listed MRP too; one merged finding only.",
+      "billed_brand": "C-Tri"
+    },
+    {
+      "seed_id": "S2-4",
+      "type": "DUPLICATE_EXACT",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A3",
+      "line_item_ids": [
+        "L016",
+        "L017"
+      ],
+      "amount_formula": "duplicate_line_amount",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "duplicate_copy_id": "L017",
+      "description": "Two identical IV fluid lines share date, time, quantity and rate; query whether one was entered twice."
+    },
+    {
+      "seed_id": "S2-5",
+      "type": "DUPLICATE_ONE_TIME",
+      "detector": "D1_ARITH_DUP",
+      "rule_id": "D1-A4",
+      "line_item_ids": [
+        "L018",
+        "L019"
+      ],
+      "amount_formula": "repeat_admin_amount",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": false,
+      "repeat_line_id": "L019",
+      "description": "The same one-time admission and registration fee is billed on 2026-08-10 and again on 2026-08-11. Ask tier; the Judge may downgrade or drop it only if the documents show a legitimate second admission.",
+      "acceptable_decisions": [
+        "keep",
+        "downgrade_to_ask",
+        "drop"
+      ]
+    },
+    {
+      "seed_id": "S2-7",
+      "type": "MISMATCH_NOT_IN_SUMMARY",
+      "detector": "D3_BILL_VS_SUMMARY",
+      "rule_id": "D3-M2",
+      "line_item_ids": [
+        "L012"
+      ],
+      "amount_formula": "line_amount_sum",
+      "expected_initial_tier": "Ask",
+      "expected_decision": "keep",
+      "must_survive_rebuttal": true,
+      "description": "Echocardiography appears in the bill but is not mentioned in the structured investigations or free-text clinical summary."
+    }
+  ],
+  "traps": [
+    {
+      "trap_id": "T2-ICU-HDU-STEPDOWN",
+      "type": "MISMATCH_ICU_DAYS",
+      "detector": "D3_BILL_VS_SUMMARY",
+      "rule_id": "D3-M1",
+      "line_item_ids": [
+        "L002"
+      ],
+      "amount_formula": "icu_excess_vs_summary",
+      "expected_decision": "drop",
+      "why_legit": "The structured summary says two ICU days; its free text explains that two additional HDU/step-down days were grouped into the single ICU care line by the synthetic billing export."
+    }
+  ],
+  "decoys": [
+    {
+      "decoy_id": "DC2-1",
+      "guards_rule": "D3-M2",
+      "line_item_ids": [
+        "L007"
+      ],
+      "why_legit": "Ventilator support billed for 2 days; summary documents ventilator_days = 2."
+    },
+    {
+      "decoy_id": "DC2-2",
+      "guards_rule": "D1-A3",
+      "line_item_ids": [
+        "L039",
+        "L040"
+      ],
+      "canonical_id": "ceftriaxone_1g_inj",
+      "billed_brand": "C-Tri",
+      "why_legit": "Two same-day ceftriaxone doses at different times, each billed exactly at MRP."
+    },
+    {
+      "decoy_id": "DC2-3",
+      "guards_rule": "D2-P1",
+      "line_item_ids": [
+        "L015"
+      ],
+      "canonical_id": "pantoprazole_40_inj",
+      "billed_brand": "Pantocaf",
+      "why_legit": "Pantoprazole billed exactly at its MRP (boundary)."
+    },
+    {
+      "decoy_id": "DC2-4",
+      "guards_rule": "D1-A5",
+      "line_item_ids": [
+        "L001"
+      ],
+      "why_legit": "Room billed nights + 1 = 8 days, inside the A5 allowance (boundary; replaces the Bill 01 boundary decoy now used by T1)."
+    }
+  ]
+}

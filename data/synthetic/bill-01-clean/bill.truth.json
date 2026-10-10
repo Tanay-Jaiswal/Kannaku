@@ -1,0 +1,198 @@
+{
+  "hospital_name": "Kanakku Synthetic Hospital - Demo Unit",
+  "patient_alias": "Synthetic Patient K-01",
+  "admission_date": "2026-08-01",
+  "discharge_date": "2026-08-04",
+  "items": [
+    {
+      "id": "L001",
+      "date": "2026-08-01",
+      "category": "room",
+      "description_raw": "Private room accommodation",
+      "quantity": 5,
+      "unit": "day",
+      "unit_rate": 8500,
+      "amount": 42500.0
+    },
+    {
+      "id": "L002",
+      "date": "2026-08-01",
+      "category": "nursing",
+      "description_raw": "Ward nursing package",
+      "quantity": 4,
+      "unit": "day",
+      "unit_rate": 2100,
+      "amount": 8400.0
+    },
+    {
+      "id": "L003",
+      "date": "2026-08-02",
+      "category": "consultation",
+      "description_raw": "Consultant surgeon professional fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 18000,
+      "amount": 18000.0,
+      "time": "09:00"
+    },
+    {
+      "id": "L004",
+      "date": "2026-08-02",
+      "category": "anaesthesia",
+      "description_raw": "Anaesthetist professional fee",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 7000,
+      "amount": 7000.0,
+      "time": "09:00"
+    },
+    {
+      "id": "L005",
+      "date": "2026-08-02",
+      "category": "ot",
+      "description_raw": "Laparoscopic operating theatre charge",
+      "quantity": 1,
+      "unit": "procedure",
+      "unit_rate": 22000,
+      "amount": 22000.0,
+      "time": "09:30"
+    },
+    {
+      "id": "L006",
+      "date": "2026-08-02",
+      "category": "procedure",
+      "description_raw": "Post-anaesthesia recovery room",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 4500,
+      "amount": 4500.0,
+      "time": "12:00"
+    },
+    {
+      "id": "L007",
+      "date": "2026-08-02",
+      "category": "drug",
+      "description_raw": "INJ CEFTRIAXONE 1G IV (morning dose)",
+      "quantity": 1,
+      "unit": "vial",
+      "unit_rate": 53.0,
+      "amount": 53.0,
+      "time": "08:00"
+    },
+    {
+      "id": "L008",
+      "date": "2026-08-02",
+      "category": "drug",
+      "description_raw": "INJ CEFTRIAXONE 1G IV (evening dose)",
+      "quantity": 1,
+      "unit": "vial",
+      "unit_rate": 53.0,
+      "amount": 53.0,
+      "time": "20:00"
+    },
+    {
+      "id": "L009",
+      "date": "2026-08-03",
+      "category": "drug",
+      "description_raw": "TAB AZIKAA 500MG",
+      "quantity": 6,
+      "unit": "tablet",
+      "unit_rate": 5.73,
+      "amount": 34.38,
+      "time": "09:00"
+    },
+    {
+      "id": "L010",
+      "date": "2026-08-02",
+      "category": "investigation",
+      "description_raw": "Complete blood count (CBC)",
+      "quantity": 3,
+      "unit": "test",
+      "unit_rate": 900,
+      "amount": 2700.0,
+      "time": "07:00"
+    },
+    {
+      "id": "L011",
+      "date": "2026-08-02",
+      "category": "investigation",
+      "description_raw": "Liver function panel",
+      "quantity": 1,
+      "unit": "test",
+      "unit_rate": 1800,
+      "amount": 1800.0,
+      "time": "07:30"
+    },
+    {
+      "id": "L012",
+      "date": "2026-08-02",
+      "category": "radiology",
+      "description_raw": "Ultrasound abdomen",
+      "quantity": 1,
+      "unit": "scan",
+      "unit_rate": 2500,
+      "amount": 2500.0,
+      "time": "08:00"
+    },
+    {
+      "id": "L013",
+      "date": "2026-08-02",
+      "category": "consumable",
+      "description_raw": "Normal saline IV fluid",
+      "quantity": 3,
+      "unit": "bag",
+      "unit_rate": 850,
+      "amount": 2550.0,
+      "time": "10:00"
+    },
+    {
+      "id": "L014",
+      "date": "2026-08-02",
+      "category": "consumable",
+      "description_raw": "Laparoscopic disposable instrument set",
+      "quantity": 1,
+      "unit": "set",
+      "unit_rate": 6200,
+      "amount": 6200.0,
+      "time": "09:30"
+    },
+    {
+      "id": "L015",
+      "date": "2026-08-02",
+      "category": "consumable",
+      "description_raw": "Sterile drape and dressing bundle",
+      "quantity": 1,
+      "unit": "bundle",
+      "unit_rate": 3200,
+      "amount": 3200.0,
+      "time": "09:30"
+    },
+    {
+      "id": "L016",
+      "date": "2026-08-01",
+      "category": "consultation",
+      "description_raw": "Daily surgical review",
+      "quantity": 3,
+      "unit": "visit",
+      "unit_rate": 1600,
+      "amount": 4800.0
+    },
+    {
+      "id": "L017",
+      "date": "2026-08-04",
+      "category": "admin",
+      "description_raw": "Discharge file preparation",
+      "quantity": 1,
+      "unit": "service",
+      "unit_rate": 850,
+      "amount": 850.0
+    }
+  ],
+  "stated_subtotal": 127140.38,
+  "stated_discount": 0.0,
+  "stated_total": 127140.38,
+  "currency": "INR",
+  "extraction_notes": [
+    "Synthetic data. Values are fictional and generated for a hackathon test fixture."
+  ]
+}
