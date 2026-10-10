@@ -115,6 +115,10 @@ export const mrpPerUnit = (r: DrugRow): number | null =>
 
 /** D2 price limit per unit: min(MRP, ceiling incl. GST). Ceiling term only if the row has one. */
 const round4 = (n: number) => Math.round(n * 10000) / 10000;
+/** Strictly-greater test against limit × (1 + tol). Both sides are rounded to 6dp so binary float error
+ *  (e.g. 10 × 1.005 = 10.049999999999999) cannot flag a rate sitting exactly on the tolerance boundary. */
+const round6 = (n: number) => Math.round(n * 1e6) / 1e6;
+const exceedsLimit = (rate: number, limit: number, tol: number) => round6(rate) > round6(limit * (1 + tol));
 const sameBrand = (a: string, b: string) => a.replace(/[^a-z0-9]/gi, "").toLowerCase() === b.replace(/[^a-z0-9]/gi, "").toLowerCase();
 
 /**
@@ -142,7 +146,7 @@ export function assessDrugPrice(
   else if (refMrp != null) bases.push({ basis: "reference_mrp", limit: refMrp, supports_provable: r.verified && brand_match });
   if (r.nlem_scheduled === true && r.ceiling_price_per_unit != null && r.gst_pct != null)
     bases.push({ basis: "ceiling_incl_gst", limit: round4(r.ceiling_price_per_unit * (1 + r.gst_pct / 100)), supports_provable: r.verified });
-  const exceeded = bases.filter((b) => line.unit_rate > b.limit * (1 + priceTol));
+  const exceeded = bases.filter((b) => exceedsLimit(line.unit_rate, b.limit, priceTol));
   if (exceeded.length === 0) return null; // at or below every applicable limit: no finding
   const provable = exceeded.filter((b) => b.supports_provable);
   const deciding = provable.length > 0 ? provable : exceeded;

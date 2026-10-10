@@ -56,6 +56,34 @@ describe("D2 assessDrugPrice", () => {
   });
 });
 
+describe("D2 exact tolerance boundary (floating-point regression)", () => {
+  // MRP ₹10.00/unit, tolerance 0.5% => threshold is exactly ₹10.05; the rule is strictly greater-than.
+  const at = (unit_rate: number) => assessDrugPrice(row, { unit_rate, units_consistent: true, qty_units: 1, billed_brand: "RefBrand" });
+  it("exactly on the boundary is not flagged (10 × 1.005 is 10.049999999999999 in binary floats)", () => {
+    expect(at(10.05)).toBeNull();
+  });
+  it("just below the boundary is not flagged", () => {
+    expect(at(10.0499)).toBeNull();
+    expect(at(10.04)).toBeNull();
+  });
+  it("just above the boundary is flagged", () => {
+    expect(at(10.0501)).toMatchObject({ tier: "Provable" });
+    expect(at(10.06)).not.toBeNull();
+  });
+  it("the same boundary holds for a printed MRP and for the ceiling term", () => {
+    const printed = (r: number) => assessDrugPrice(row, { unit_rate: r, units_consistent: true, qty_units: 1, printed_mrp: 10 });
+    expect(printed(10.05)).toBeNull();
+    expect(printed(10.0501)).not.toBeNull();
+    // ceiling incl. GST = 12.60 -> threshold 12.663 (printed MRP raised out of the way)
+    const ceil = (r: number) => assessDrugPrice(row, { unit_rate: r, units_consistent: true, qty_units: 1, printed_mrp: 50 });
+    expect(ceil(12.663)).toBeNull();
+    expect(ceil(12.6631)).toMatchObject({ binding_basis: "ceiling_incl_gst" });
+  });
+  it("a sweep of 4dp rates around the boundary never flags at or below 10.05", () => {
+    for (let r = 10.04; r <= 10.05 + 1e-9; r += 0.0001) expect(at(Math.round(r * 1e4) / 1e4)).toBeNull();
+  });
+});
+
 describe("D1-A4 one-time fee classes", () => {
   it("same fee repeated shares a class; different admin fees do not", () => {
     expect(oneTimeFeeClass("Admission and registration fee")).toBe("admission_registration");
