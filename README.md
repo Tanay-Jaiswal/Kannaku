@@ -1,6 +1,6 @@
 # Kanakku
 Adversarial AI hospital-bill auditor for Indian patients. **Synthetic data only.** See SPEC.md.
-Status: Phase 0 (skeleton, schemas, config, reference table, 3 synthetic bills). Setup: `npm install && npm test && npm run typecheck`.
+Status: Phase 1 (Next.js App Router + Tailwind foundation, static homepage). Setup: `npm install && npm test && npm run typecheck`, then `npm run dev` and open http://localhost:3000.
 
 Data checks:
 ```bash
