@@ -55,7 +55,11 @@ export const models = {
   reason: () => requireEnv("MODEL_REASON"),
 };
 
-export const cacheOnly = () => process.env.KANAKKU_CACHE_ONLY === "1";
+/**
+ * Live (paid) model calls happen only when KANAKKU_CACHE_ONLY is explicitly "0". Unset or any other value
+ * means cache-only: a cache miss fails with a clear error and nothing is sent to the provider.
+ */
+export const cacheOnly = () => process.env.KANAKKU_CACHE_ONLY !== "0";
 
 /** IDs of the built-in demo bills. These always run from the committed cache, never live (SPEC 0.7). */
 export const SAMPLE_BILL_IDS = ["bill-01-clean", "bill-02-demo", "bill-03-errors"] as const;

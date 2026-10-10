@@ -1,18 +1,14 @@
 // Pipeline stage "Matching prices": pure-code D1 + D2. POST { bill, normalization } -> { candidates, skipped_checks }.
 import { NextResponse } from "next/server";
-import { ZodError } from "zod";
-import tableJson from "../../../../data/reference/drug_reference.json";
-import { DrugTable } from "@/lib/schemas";
 import { runRules } from "@/lib/detectors";
-
-const table = DrugTable.parse(tableJson);
+import { errorResponse, readJson } from "@/lib/http";
+import { referenceTable } from "@/lib/table";
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as { bill?: unknown; normalization?: unknown };
-    return NextResponse.json(runRules(body.bill, body.normalization, table));
+    const body = await readJson(req);
+    return NextResponse.json(runRules(body.bill, body.normalization, referenceTable));
   } catch (e) {
-    if (e instanceof ZodError) return NextResponse.json({ error: "Invalid input", issues: e.issues }, { status: 400 });
-    return NextResponse.json({ error: e instanceof Error ? e.message : "Rule engine failed" }, { status: 500 });
+    return errorResponse(e, "rules");
   }
 }

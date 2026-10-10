@@ -37,6 +37,16 @@ export const BillExtraction = z.object({
   stated_total: Rupees, // as printed
   currency: z.literal("INR"),
   extraction_notes: z.array(z.string()).default([]),
+  // Phase 3 (additive): what the extractor could NOT read, so the rule engine can skip checks it cannot
+  // run honestly instead of guessing. Absent on the synthetic truth files (they are complete).
+  extraction_quality: z
+    .object({
+      excluded_lines: z.array(z.object({ position: z.number().int().positive(), description: z.string(), reason: z.string() })).default([]),
+      stated_total_printed: z.boolean().default(true),
+      rates_not_printed: z.array(z.string()).default([]), // line ids whose unit_rate code derived as amount / quantity
+      dates_not_printed: z.array(z.string()).default([]), // line ids with no printed date (admission date used for grouping)
+    })
+    .optional(),
 });
 export type BillExtraction = z.infer<typeof BillExtraction>;
 
@@ -229,6 +239,11 @@ export const Finding = z.object({
   question_for_billing_desk: z.string(),
   status: z.enum(["kept", "downgraded", "dropped"]),
   debate_log: z.array(DebateStep),
+  // Phase 4 (additive): whether the Auditor/Defender/Judge debate actually ran. A finding that could not be
+  // debated (budget, provider failure) keeps its rule tier and is shown as "not cross-examined", never hidden.
+  review: z.object({ state: z.enum(["debated", "not_debated"]), note: z.string() }).optional(),
+  // Code-side corrections applied to the Judge's decision (e.g. a Provable finding dropped without basis_error).
+  enforcement_notes: z.array(z.string()).optional(),
 });
 export type Finding = z.infer<typeof Finding>;
 
@@ -256,6 +271,9 @@ export const PipelineResult = z.object({
   }),
   disclaimer: z.string(),
   versions: z.object({ spec: z.string(), prompts: z.record(z.string()), table: z.string() }),
+  // Phase 4/5 (additive): plain-language notes about anything that limited this audit.
+  warnings: z.array(z.string()).optional(),
+  clinical_check: z.object({ state: z.enum(["done", "failed"]), note: z.string() }).optional(),
 });
 export type PipelineResult = z.infer<typeof PipelineResult>;
 

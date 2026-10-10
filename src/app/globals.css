@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Print: only the dispute letter is printed (everything else carries print:hidden). */
+@media print {
+  @page { size: A4; margin: 18mm 16mm; }
+  body { background: white; }
+}
