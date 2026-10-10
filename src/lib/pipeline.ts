@@ -8,6 +8,7 @@ import { reconcile, type BillDraft, type SummaryDraft } from "./extract";
 import { debateOrder, numberCandidates } from "./flow";
 import { normalizeBill } from "./normalize";
 import { KanakkuError } from "./errors";
+import { DEMO_MODEL } from "./config";
 import { limits } from "./limits";
 import type { DrugTable } from "./schemas";
 import type { RunContext } from "./spend";
@@ -31,6 +32,7 @@ export async function runPipeline(a: { billDraft: BillDraft; summaryDraft: Summa
   let clinicalCheck: FinalizeInput["clinical_check"] = { state: "done", note: "Bill compared with the discharge summary." };
   const cl = await runClinical(bill, summary, a.ctx);
   clinical = cl.candidates;
+  if (cl.meta?.model === DEMO_MODEL) clinicalCheck = { state: "done", note: "Bill compared with the discharge summary by the precomputed demonstration script (no AI model ran)." };
   if (cl.error) clinicalCheck = { state: "failed", note: `The AI comparison with the discharge summary did not run: ${cl.error.message} (the ICU-day check is code-only and still ran).` };
   log(`candidates: ${rules.candidates.length} rule + ${clinical.length} clinical`);
   const numbered = numberCandidates(rules.candidates, clinical);

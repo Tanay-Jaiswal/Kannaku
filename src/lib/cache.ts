@@ -62,6 +62,12 @@ export function readSampleManifest(): SampleManifest | null {
     return null;
   }
 }
+/**
+ * How the built-in samples are reviewed on this deployment: a recorded AI review replayed from the committed
+ * cache when its manifest is present, otherwise the precomputed demonstration script (src/lib/demo.ts).
+ */
+export const sampleReviewSource = (): "recorded_ai" | "demonstration" => (readSampleManifest() ? "recorded_ai" : "demonstration");
+
 export function writeSampleManifest(m: SampleManifest) {
   mkdirSync(cacheDir(), { recursive: true });
   writeFileSync(path.join(cacheDir(), "manifest.json"), JSON.stringify(m, null, 2) + "\n");

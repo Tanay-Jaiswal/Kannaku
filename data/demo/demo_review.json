@@ -1,0 +1,263 @@
+{
+  "_about": "SYNTHETIC DEMONSTRATION SCRIPT. Hand-written text used ONLY for the three built-in synthetic sample bills when no recorded AI review (cache/manifest.json) is deployed. No AI model wrote this. Outcomes are not chosen here: which candidates exist and whether each is kept or dropped come from data/synthetic/<bill>/seed_manifest.json and are enforced by src/lib/demo.ts. Every answer still passes the same schema, number-guard, tone and Judge-rule checks as live AI output. {facts.<key>} placeholders are filled by code from the finding's code-computed facts, so no figure here is typed by hand.",
+  "bill-01-clean": {
+    "T1-ROOM-DELAYED-DISCHARGE": {
+      "auditor": {
+        "claim": "Line L001 bills {facts.days_billed} room days, but the bill's own dates give {facts.nights} nights, and code allows at most {facts.allowed_days} room days.",
+        "evidence_point": "Room days billed exceed nights plus one by {facts.extra_days} day(s), worth {facts.amount_at_stake}.",
+        "why_it_matters": "A room day that does not match the stay is charged at the full daily rate of {facts.daily_rate}."
+      },
+      "defender": {
+        "strongest_justification": "The discharge summary narrative says discharge was ordered on 2026-08-04, but transport was unavailable and the patient stayed in the room overnight, leaving on 2026-08-05.",
+        "supporting_points": ["The free-text summary records the extra overnight in the room.", "The structured discharge date is the order date, not the physical departure."],
+        "what_would_confirm": "The ward bed-occupancy log or gate pass showing departure on 2026-08-05."
+      },
+      "judge": {
+        "rationale": "The narrative documents a real extra night in the room after the discharge order, which accounts for the additional room day.",
+        "counter_argument": "This charge appears to be explained by the discharge summary: the patient remained in the room one extra night while waiting for transport. It is shown for transparency and not counted.",
+        "question_for_billing_desk": "Can you confirm the room was occupied until the morning of 2026-08-05?"
+      }
+    }
+  },
+  "bill-02-demo": {
+    "S2-1": {
+      "auditor": {
+        "claim": "Line L003 prints {facts.printed_amount}, but its own quantity and rate give {facts.quantity_times_rate}.",
+        "evidence_point": "Quantity {facts.quantity} at {facts.unit_rate} per day; the printed amount is higher by {facts.difference}.",
+        "why_it_matters": "The bill contradicts its own figures, so the excess can be shown from the bill alone."
+      },
+      "defender": {
+        "strongest_justification": "A surcharge or extra nursing shift might have been folded into this line during billing.",
+        "supporting_points": ["Hospitals sometimes merge add-on nursing charges into one line."],
+        "what_would_confirm": "A separate, itemised nursing surcharge entry with its own quantity and rate."
+      },
+      "judge": {
+        "rationale": "No surcharge appears anywhere on the bill. The printed amount does not follow from the printed quantity and rate.",
+        "counter_argument": "The bill's own quantity and rate give {facts.quantity_times_rate}, not {facts.printed_amount}. Any extra charge should be its own line, so please correct this line by {facts.amount_at_stake}.",
+        "question_for_billing_desk": "Please explain why line L003 is higher than its quantity times its rate, or correct it."
+      }
+    },
+    "S2-2": {
+      "auditor": {
+        "claim": "Line L013 bills Azikaa tablets at {facts.billed_rate_per_unit} each, above the reference MRP of {facts.reference_mrp_per_unit} for this brand.",
+        "evidence_point": "The billed brand matches a verified reference row; the excess over MRP is {facts.amount_at_stake}.",
+        "why_it_matters": "A medicine should not be sold above the MRP printed on its pack."
+      },
+      "defender": {
+        "strongest_justification": "The pharmacy may have issued a newer batch printed with a higher MRP than the reference value.",
+        "supporting_points": ["MRPs can change between batches."],
+        "what_would_confirm": "The strip label or pharmacy issue slip showing the MRP printed on the pack that was issued."
+      },
+      "judge": {
+        "rationale": "The bill prints no MRP and no batch, and the brand matches the verified reference row, so the higher rate is not explained.",
+        "counter_argument": "Unless the pack issued shows a higher printed MRP, the rate above {facts.reference_mrp_per_unit} per tablet should be refunded: {facts.amount_at_stake}.",
+        "question_for_billing_desk": "What MRP was printed on the Azikaa strips issued under line L013?"
+      }
+    },
+    "S2-3": {
+      "auditor": {
+        "claim": "Line L014 bills C-Tri ceftriaxone at {facts.billed_rate_per_unit} per vial, above both the reference MRP and the ceiling price including GST.",
+        "evidence_point": "Billed above the reference-table MRP and the NPPA ceiling price including GST; the excess over the lower limit, {facts.binding_limit_per_unit} per vial, is {facts.amount_at_stake}.",
+        "why_it_matters": "This medicine is price-controlled; a vial should not cost more than its ceiling price or MRP."
+      },
+      "defender": {
+        "strongest_justification": "Preparation or handling of an injectable is sometimes added to the vial price.",
+        "supporting_points": ["Some hospitals add a mixing or administration charge to injections."],
+        "what_would_confirm": "A separate line for drug administration or preparation charges."
+      },
+      "judge": {
+        "rationale": "No administration charge is shown, and any such charge should be a separate line, not part of the medicine's price.",
+        "counter_argument": "The medicine's own price cannot exceed its ceiling price or MRP. Please refund {facts.amount_at_stake} or show a separate, itemised administration charge.",
+        "question_for_billing_desk": "Why is line L014 priced above the MRP and ceiling price for this vial?"
+      }
+    },
+    "S2-4": {
+      "auditor": {
+        "claim": "Lines L016 and L017 are the same normal saline bag on the same date and time.",
+        "evidence_point": "{facts.copies_billed} identical copies billed; the repeat copy is {facts.amount_of_repeat_copies}.",
+        "why_it_matters": "Identical entries at the same moment are a common double-entry error."
+      },
+      "defender": {
+        "strongest_justification": "In sepsis, two bags can be started together as a fluid bolus.",
+        "supporting_points": ["Fluid resuscitation can use more than one bag at once."],
+        "what_would_confirm": "The nursing fluid chart showing two bags started at that time."
+      },
+      "judge": {
+        "rationale": "Two bags at once is possible, but nothing in the documents shows it. This stays a question, not a proven error.",
+        "counter_argument": "Two identical lines at the same date and time usually mean one bag was entered twice. If the fluid chart shows one bag, please remove {facts.amount_at_stake}.",
+        "question_for_billing_desk": "Does the nursing fluid chart show two saline bags started at that time?"
+      }
+    },
+    "S2-5": {
+      "auditor": {
+        "claim": "The admission and registration fee appears twice, on lines L018 and L019.",
+        "evidence_point": "A one-time fee billed on {facts.lines_billed} lines ({facts.dates}); the repeat is {facts.amount_of_repeat_lines}.",
+        "why_it_matters": "A registration fee is normally charged once per admission."
+      },
+      "defender": {
+        "strongest_justification": "Some hospitals charge registration again when a patient moves between units, such as ICU to ward.",
+        "supporting_points": ["Unit transfers can trigger separate registration in some billing systems."],
+        "what_would_confirm": "The hospital's tariff showing a per-unit registration fee."
+      },
+      "judge": {
+        "rationale": "A per-unit fee is not documented anywhere provided. Keep this as a question for the billing desk.",
+        "counter_argument": "There was one admission. Unless the tariff shows a separate fee per unit, the second registration fee of {facts.amount_at_stake} should be removed.",
+        "question_for_billing_desk": "Why was the admission and registration fee charged twice for one admission?"
+      }
+    },
+    "S2-7": {
+      "clinical": {
+        "summary_evidence": "Echocardiography is not in investigations_documented, and the narrative states it is not listed and that no cardiac indication is documented.",
+        "reasoning": "A billed echocardiogram with no mention anywhere in the summary should be supported by an order or report."
+      },
+      "auditor": {
+        "claim": "Line L012 bills echocardiography with Doppler, but the discharge summary does not mention it.",
+        "evidence_point": "Not in the structured investigations, and the narrative notes no cardiac indication. Amount billed: {facts.amount_at_stake}.",
+        "why_it_matters": "A charge for a test the clinical record does not mention should be backed by an order or report."
+      },
+      "defender": {
+        "strongest_justification": "Echocardiography is often done in sepsis to check heart function; the report may simply be missing from the summary.",
+        "supporting_points": ["Summaries do not always list every test."],
+        "what_would_confirm": "The echocardiography report or the doctor's order for it."
+      },
+      "judge": {
+        "rationale": "The test is clinically plausible, but the documents provided do not support it. Keep it as a question, not a proven error.",
+        "counter_argument": "The summary specifically notes no cardiac indication. Please share the echo report or order; without it, {facts.amount_at_stake} should be reviewed.",
+        "question_for_billing_desk": "Can you share the echocardiography report or order for line L012?"
+      }
+    },
+    "T2-ICU-HDU-STEPDOWN": {
+      "auditor": {
+        "claim": "Line L002 bills {facts.icu_days_billed} ICU days, but the discharge summary documents {facts.icu_days_documented_in_summary} ICU days.",
+        "evidence_point": "{facts.extra_days} extra day(s) at {facts.daily_rate}, worth {facts.amount_for_extra_days}.",
+        "why_it_matters": "ICU days are among the most expensive lines on a bill."
+      },
+      "defender": {
+        "strongest_justification": "The summary narrative says the patient had two ICU days followed by two HDU/step-down days, and the billing export groups all four critical-care days under one ICU line.",
+        "supporting_points": ["The free-text summary describes the step-down days explicitly.", "The line description itself says the export groups ICU and HDU days."],
+        "what_would_confirm": "The bed-transfer log showing the ICU and HDU sequence."
+      },
+      "judge": {
+        "rationale": "The documents explain the extra days as step-down care grouped under one billing code, so this is not a charge to question.",
+        "counter_argument": "This charge appears to be explained by the discharge summary: the extra days were HDU/step-down care billed under one critical-care code. It is shown for transparency and not counted.",
+        "question_for_billing_desk": "Can the bed-transfer log confirm the ICU and HDU days billed under line L002?"
+      }
+    }
+  },
+  "bill-03-errors": {
+    "S3-1": {
+      "auditor": {
+        "claim": "The bill's stated total is {facts.stated_total}, but its lines add up to {facts.sum_of_line_amounts}.",
+        "evidence_point": "With a stated discount of {facts.stated_discount}, the expected total is {facts.expected_total}; the difference is {facts.difference}.",
+        "why_it_matters": "The bill contradicts its own lines, so the gap can be shown from the bill alone."
+      },
+      "defender": {
+        "strongest_justification": "An unlisted charge, such as a deposit adjustment or a late entry, may have been added at the total.",
+        "supporting_points": ["Late charges are sometimes added after the itemised list is printed."],
+        "what_would_confirm": "An itemised line for the additional amount."
+      },
+      "judge": {
+        "rationale": "No line explains the gap. A charge that is not itemised cannot be checked.",
+        "counter_argument": "Every charge should appear as a line. Please itemise or remove the {facts.amount_at_stake} by which the total exceeds the sum of the lines.",
+        "question_for_billing_desk": "Which charge explains the difference between the line items and the stated total?"
+      }
+    },
+    "S3-2": {
+      "auditor": {
+        "claim": "Line L009 bills Moxikem CV tablets at {facts.billed_rate_per_unit} each, above the reference MRP of {facts.reference_mrp_per_unit}.",
+        "evidence_point": "The billed brand matches a verified reference row; the excess over MRP is {facts.amount_at_stake}.",
+        "why_it_matters": "A medicine should not be sold above the MRP printed on its pack."
+      },
+      "defender": {
+        "strongest_justification": "A newer batch with a higher printed MRP may have been issued.",
+        "supporting_points": ["MRPs can change between batches."],
+        "what_would_confirm": "The pack label or pharmacy issue slip showing the printed MRP."
+      },
+      "judge": {
+        "rationale": "No batch or MRP is printed on the bill, and the brand matches the verified reference row.",
+        "counter_argument": "Unless the issued pack shows a higher MRP, the rate above {facts.reference_mrp_per_unit} per tablet should be refunded: {facts.amount_at_stake}.",
+        "question_for_billing_desk": "What MRP was printed on the Moxikem CV strips issued under line L009?"
+      }
+    },
+    "S3-3": {
+      "auditor": {
+        "claim": "Line L001 bills {facts.days_billed} room days for a stay of {facts.nights} nights; code allows at most {facts.allowed_days}.",
+        "evidence_point": "{facts.extra_days} extra day(s) at {facts.daily_rate}, worth {facts.amount_at_stake}.",
+        "why_it_matters": "Room days above the stay are charged at the full daily rate."
+      },
+      "defender": {
+        "strongest_justification": "Some hospitals count both the admission day and the discharge day as room days.",
+        "supporting_points": ["Day-counting conventions vary between hospitals."],
+        "what_would_confirm": "A record of a delayed departure after the discharge date."
+      },
+      "judge": {
+        "rationale": "The allowance already counts nights plus one day, and the narrative notes no discharge delay.",
+        "counter_argument": "Even counting both the admission and discharge days, the stay allows fewer room days than billed. Please remove {facts.amount_at_stake} or show a delayed departure.",
+        "question_for_billing_desk": "Why are more room days billed on line L001 than the stay allows?"
+      }
+    },
+    "S3-4": {
+      "clinical": {
+        "summary_evidence": "blood_products_documented is empty, and the narrative says no blood products are described in the clinical course.",
+        "reasoning": "Two units of packed red cells would normally appear in the summary and in a transfusion record."
+      },
+      "auditor": {
+        "claim": "Line L015 bills two units of packed red blood cells, but the summary says no blood products were given.",
+        "evidence_point": "No blood products in the structured summary or the narrative. Amount billed: {facts.amount_at_stake}.",
+        "why_it_matters": "Blood products are always recorded with a transfusion note and a blood-bank issue slip."
+      },
+      "defender": {
+        "strongest_justification": "Blood may have been cross-matched and reserved for surgery, and the reservation billed even though it was not transfused.",
+        "supporting_points": ["Blood is often reserved for orthopaedic surgery."],
+        "what_would_confirm": "The blood-bank issue slip and transfusion record."
+      },
+      "judge": {
+        "rationale": "A reservation would be a different charge from transfused units, and nothing documents a transfusion.",
+        "counter_argument": "The summary states no blood products were given. Please share the transfusion record, or remove {facts.amount_at_stake}.",
+        "question_for_billing_desk": "Can you share the blood-bank issue slip and transfusion record for line L015?"
+      }
+    },
+    "S3-5": {
+      "clinical": {
+        "summary_evidence": "physio_documented is false, and the narrative says physiotherapy is not mentioned.",
+        "reasoning": "Five billed physiotherapy sessions with no mention in the summary should be supported by session notes."
+      },
+      "auditor": {
+        "claim": "Line L016 bills physiotherapy sessions, but the summary records no physiotherapy.",
+        "evidence_point": "physio_documented is false and the narrative does not mention it. Amount billed: {facts.amount_at_stake}.",
+        "why_it_matters": "Each session should have a therapist's note."
+      },
+      "defender": {
+        "strongest_justification": "Early mobilisation after femur fixation is standard, so physiotherapy is likely to have happened.",
+        "supporting_points": ["Physiotherapy after femur surgery is routine."],
+        "what_would_confirm": "The physiotherapist's session notes."
+      },
+      "judge": {
+        "rationale": "Plausible but undocumented. Keep it as a question for the billing desk.",
+        "counter_argument": "Routine care is still recorded. Please share the session notes, or remove {facts.amount_at_stake}.",
+        "question_for_billing_desk": "Can you share the physiotherapy session notes for line L016?"
+      }
+    },
+    "T3-CXR-IN-FREE-TEXT": {
+      "clinical": {
+        "summary_evidence": "The portable chest radiograph is not in the structured investigations_documented list.",
+        "reasoning": "A billed investigation missing from the structured list is worth checking against the full summary."
+      },
+      "auditor": {
+        "claim": "Line L017 bills a portable chest radiograph that is not in the summary's structured investigations list.",
+        "evidence_point": "Missing from investigations_documented. Amount billed: {facts.amount_at_stake}.",
+        "why_it_matters": "Billed investigations should be supported by the clinical record."
+      },
+      "defender": {
+        "strongest_justification": "The summary narrative states that a portable chest radiograph was obtained in the emergency bay before transfer to the ward.",
+        "supporting_points": ["The free-text summary documents the radiograph explicitly.", "It was left out of the structured list only."],
+        "what_would_confirm": "The radiology report for the emergency-bay chest radiograph."
+      },
+      "judge": {
+        "rationale": "The narrative documents the radiograph, so the structured list is incomplete, not the bill.",
+        "counter_argument": "This charge appears to be explained by the discharge summary narrative, which records the emergency-bay chest radiograph. It is shown for transparency and not counted.",
+        "question_for_billing_desk": "No question needed: the summary narrative documents this radiograph."
+      }
+    }
+  }
+}

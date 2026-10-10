@@ -13,7 +13,7 @@ import { GET as sample } from "../src/app/api/sample/route";
 import { GET as sampleDoc } from "../src/app/api/sample/document/route";
 import { GET as config } from "../src/app/api/config/route";
 import { setProviderForTests } from "../src/lib/llm/call";
-import { clearMemoryCache } from "../src/lib/cache";
+import { clearMemoryCache, writeSampleManifest } from "../src/lib/cache";
 import { resetSpendState } from "../src/lib/spend";
 import { MockProvider, testEnv } from "./helpers/mockProvider";
 import { scriptedModel } from "./helpers/scriptedModel";
@@ -97,14 +97,26 @@ describe("sample routes", () => {
     expect((await sampleDoc(new Request("http://t/api/sample/document?id=bill-02-demo&kind=../x"))).status).toBe(400);
   });
 
-  it("sample normalize with a cold cache degrades to a partial result instead of spending", async () => {
+  it("with no recorded review, sample normalize uses the labelled demonstration script and never calls a provider", async () => {
+    const mock = new MockProvider();
+    setProviderForTests(mock);
+    const r = await normalize(json("/api/normalize", { run_id: RUN, sample_id: "bill-02-demo", ...(await samplePayload()) }));
+    const body = await r.json();
+    expect(r.status).toBe(200);
+    expect(body.normalize_error).toBeUndefined();
+    expect(body.meta.model).toBe("kanakku-demonstration-script");
+    expect(body.bill.items).toHaveLength(40);
+    expect(mock.calls).toHaveLength(0);
+  });
+
+  it("with a recorded-review manifest but a cold cache, sample normalize degrades to a partial result instead of spending", async () => {
+    writeSampleManifest({ extract_model: "m-extract", reason_model: "m-reason", warmed_on: "2026-10-10" });
     const mock = new MockProvider();
     setProviderForTests(mock);
     const r = await normalize(json("/api/normalize", { run_id: RUN, sample_id: "bill-02-demo", ...(await samplePayload()) }));
     const body = await r.json();
     expect(r.status).toBe(200);
     expect(body.normalize_error.code).toBe("CACHE_MISS");
-    expect(body.bill.items).toHaveLength(40);
     expect(mock.calls).toHaveLength(0);
   });
 });
@@ -157,5 +169,12 @@ describe("/api/config", () => {
     expect(JSON.parse(text)).toMatchObject({ live_uploads_enabled: true, max_upload_mb: 4 });
     delete process.env.KANAKKU_CACHE_ONLY;
     expect(await (await config()).json()).toMatchObject({ live_uploads_enabled: false, live_uploads_reason: "cache_only" });
+  });
+  it("says whether the warmed sample review is present, so the UI never implies a full sample run", async () => {
+    expect(await (await config()).json()).toMatchObject({ sample_review_saved: false, sample_review_source: "demonstration" }); // fresh temp cache dir
+    writeSampleManifest({ extract_model: "m-extract", reason_model: "m-reason", warmed_on: "2026-10-10" });
+    const body = await (await config()).json();
+    expect(body).toMatchObject({ sample_review_saved: true, sample_review_source: "recorded_ai" });
+    expect(JSON.stringify(body)).not.toMatch(/m-extract|m-reason/); // model ids are not exposed
   });
 });

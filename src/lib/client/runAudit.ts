@@ -2,6 +2,7 @@
 // comes from /api/finalize, which re-derives it on the server. This file never sees the API key.
 import type { BillExtraction, CandidateFinding, DischargeSummary, NormalizationResult, PipelineResult } from "../schemas";
 import { debateOrder, numberCandidates } from "../flow";
+import { DEMO_MODEL } from "../config";
 
 export type StepId = "read" | "prices" | "clinical" | "debate" | "finalize";
 export type StepStatus = "pending" | "running" | "done" | "partial" | "failed";
@@ -58,10 +59,14 @@ export async function runAudit(source: AuditSource, opts: { signal: AbortSignal;
     const [b, s] = await Promise.all([extract("bill", source.bill), extract("summary", source.summary)]);
     drafts = { bill_draft: b.draft, summary_draft: s.draft };
   }
-  const norm = await post<{ bill: BillExtraction; summary: DischargeSummary; normalization: NormalizationResult; normalize_error?: { message: string } }>(
+  const norm = await post<{ bill: BillExtraction; summary: DischargeSummary; normalization: NormalizationResult; meta?: { model?: string } | null; normalize_error?: { message: string } }>(
     "/api/normalize", { run_id, sample_id, ...drafts }, signal);
   if (norm.normalize_error) warnings.push(`Medicine names could not be matched to the reference table, so drug-price checks were skipped: ${norm.normalize_error.message}`);
-  onProgress({ step: "read", status: norm.normalize_error ? "partial" : "done", note: `${norm.bill.items.length} bill lines read` });
+  // Sample runs on a deployment without a recorded AI review use the precomputed demonstration script; every
+  // step note says so, so a scripted answer is never shown as a live AI step.
+  let demo = norm.meta?.model === DEMO_MODEL;
+  const tag = () => (demo ? " · demonstration script, no AI model" : "");
+  onProgress({ step: "read", status: norm.normalize_error ? "partial" : "done", note: `${norm.bill.items.length} bill lines read${tag()}` });
   const { bill, summary, normalization } = norm;
 
   // 2. Matching prices: deterministic D1 + D2
@@ -71,11 +76,12 @@ export async function runAudit(source: AuditSource, opts: { signal: AbortSignal;
 
   // 3. Checking clinical notes: D3
   onProgress({ step: "clinical", status: "running" });
-  const clin = await post<{ candidates: CandidateFinding[]; clinical_error: { message: string } | null }>("/api/clinical", { run_id, sample_id, bill, summary }, signal);
+  const clin = await post<{ candidates: CandidateFinding[]; meta?: { model?: string } | null; clinical_error: { message: string } | null }>("/api/clinical", { run_id, sample_id, bill, summary }, signal);
+  demo = demo || clin.meta?.model === DEMO_MODEL;
   const clinical_check = clin.clinical_error
     ? { state: "failed" as const, note: `The AI comparison with the discharge summary did not run: ${clin.clinical_error.message} (the ICU-day check is code-only and still ran).` }
-    : { state: "done" as const, note: "Bill compared with the discharge summary." };
-  onProgress({ step: "clinical", status: clin.clinical_error ? "partial" : "done", note: clin.clinical_error ? "AI comparison did not run" : `${clin.candidates.length} candidate(s)` });
+    : { state: "done" as const, note: demo ? "Bill compared with the discharge summary by the precomputed demonstration script (no AI model ran)." : "Bill compared with the discharge summary." };
+  onProgress({ step: "clinical", status: clin.clinical_error ? "partial" : "done", note: clin.clinical_error ? "AI comparison did not run" : `${clin.candidates.length} candidate(s)${tag()}` });
 
   // 4. Cross-examining findings: auditor -> defender -> judge per finding, 3 findings at a time
   const numbered = numberCandidates(rules.candidates, clin.candidates);
@@ -105,7 +111,7 @@ export async function runAudit(source: AuditSource, opts: { signal: AbortSignal;
     onProgress({ step: "debate", status: "running", note: `${done} of ${debate.length}` });
   });
   const failedDebates = [...results.values()].filter((r) => r.debate_error).length + (numbered.length - debate.length);
-  onProgress({ step: "debate", status: failedDebates ? "partial" : "done", note: failedDebates ? `${failedDebates} finding(s) not cross-examined` : `${debate.length} cross-examined` });
+  onProgress({ step: "debate", status: failedDebates ? "partial" : "done", note: failedDebates ? `${failedDebates} finding(s) not cross-examined` : `${debate.length} cross-examined${tag()}` });
 
   // 5. Finalize: server re-derives amounts, applies Judge constraints and totals
   onProgress({ step: "finalize", status: "running" });

@@ -1,7 +1,72 @@
 @import "tailwindcss";
 
+/* Kanakku design tokens. Warm paper background, deep ink text, a ledger-green accent, and muted status
+   colours that are always paired with an icon or a word (never colour alone). */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "Noto Sans Devanagari", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Noto Serif", serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper: #f6f4ef;
+  --color-paper-deep: #efece4;
+  --color-surface: #ffffff;
+  --color-line: #e2ded4;
+  --color-line-strong: #cdc7b9;
+
+  --color-ink: #16201e;
+  --color-ink-soft: #3d4a47;
+  --color-ink-muted: #5f6b68;
+  --color-ink-faint: #8a938f;
+
+  --color-brand-50: #eef6f3;
+  --color-brand-100: #d5ebe4;
+  --color-brand-200: #a9d3c6;
+  --color-brand-500: #2f7f6c;
+  --color-brand-600: #1f6a59;
+  --color-brand-700: #145646;
+  --color-brand-800: #0f4337;
+  --color-brand-900: #0b3029;
+
+  --color-provable-50: #ecf5f1;
+  --color-provable-700: #145646;
+  --color-ask-50: #fbf3e2;
+  --color-ask-100: #f5e2b8;
+  --color-ask-700: #8a5a0b;
+  --color-ask-800: #6e4709;
+  --color-caution-50: #fdf5e7;
+  --color-caution-200: #efd29b;
+  --color-caution-800: #6e4709;
+  --color-danger-50: #fbefed;
+  --color-danger-200: #eec3bc;
+  --color-danger-700: #9b2c1f;
+  --color-danger-800: #7c2318;
+
+  --shadow-card: 0 1px 2px rgb(22 32 30 / 0.04), 0 1px 1px rgb(22 32 30 / 0.03);
+  --shadow-raised: 0 1px 2px rgb(22 32 30 / 0.05), 0 8px 24px -12px rgb(22 32 30 / 0.18);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-feature-settings: "kern"; }
+  :focus-visible { outline: 2px solid var(--color-brand-600); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background: var(--color-brand-100); }
+  summary { list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+}
+
+/* Money and counts line up in columns. */
+.num { font-variant-numeric: tabular-nums; }
+
+@keyframes k-fade-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.k-enter { animation: k-fade-up 220ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
 /* Print: only the dispute letter is printed (everything else carries print:hidden). */
 @media print {
   @page { size: A4; margin: 18mm 16mm; }
-  body { background: white; }
+  html, body { background: white !important; color: black; }
 }

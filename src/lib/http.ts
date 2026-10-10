@@ -3,17 +3,22 @@ import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { SAMPLE_BILL_IDS } from "./config";
 import { KanakkuError, type ApiErrorBody } from "./errors";
+import { sampleReviewSource } from "./cache";
 import type { RunContext } from "./spend";
 
 export const isSampleId = (id: unknown): id is (typeof SAMPLE_BILL_IDS)[number] =>
   typeof id === "string" && (SAMPLE_BILL_IDS as readonly string[]).includes(id);
 
-/** Builds the run context. Sample runs are cache-only whatever the env says (SPEC 0.7). */
+/**
+ * Builds the run context. Sample runs never call a model, whatever the env says (SPEC 0.7): they replay the
+ * recorded AI review when one is deployed, otherwise they use the labelled demonstration script.
+ */
 export function runContext(req: Request, body: { run_id?: unknown; sample_id?: unknown }): RunContext {
   const runId = typeof body.run_id === "string" && /^[A-Za-z0-9_-]{8,64}$/.test(body.run_id) ? body.run_id : null;
   if (!runId) throw new KanakkuError("BAD_INPUT", "Missing or invalid audit id. Please start a new audit.");
   const fwd = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return { runId, clientId: fwd || "local", mode: isSampleId(body.sample_id) ? "sample" : "live" };
+  if (!isSampleId(body.sample_id)) return { runId, clientId: fwd || "local", mode: "live" };
+  return { runId, clientId: fwd || "local", mode: sampleReviewSource() === "recorded_ai" ? "sample" : "demo", sampleId: body.sample_id };
 }
 
 /** Converts any thrown error into a JSON response. Logs code and internal detail only, never content. */

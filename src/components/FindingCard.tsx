@@ -1,108 +1,155 @@
 "use client";
-// One finding. Collapsed: what, how much, tier. Expanded: bill lines, the three-column debate
-// (Finding / Hospital would say / Our counter), code-computed evidence, source citation and limitations.
-import { useState } from "react";
+// One finding. Collapsed: what, which lines, how much, tier and review state. Expanded: bill lines, the
+// three-column cross-examination (Finding / Hospital would say / Our counter), the Judge's verdict, the
+// question for the billing desk, code-computed evidence, source citation and limitations.
+import { useId, useState, type ReactNode } from "react";
 import type { BillExtraction, Finding } from "@/lib/schemas";
 import { BASIS_LABEL, EVIDENCE_LABEL, FINDING_TITLE, formatInr } from "@/lib/present";
 import { UNVERIFIED_REFERENCE_LABEL } from "@/lib/config";
+import { isDemoFinding } from "@/lib/status";
+import { Badge, IconAlert, IconCalc, IconCheck, IconChevron, IconMinus, IconQuestion, IconScale, IconXCircle } from "./ui";
 
 type Props = { f: Finding; bill: BillExtraction; overlapsWith?: string; selected: boolean; onSelect: (v: boolean) => void };
 
-const TIER_BADGE: Record<Finding["tier"], string> = {
-  Provable: "bg-teal-700 text-white", Ask: "bg-amber-100 text-amber-900", Contractual: "bg-slate-200 text-slate-800",
-};
+function TierBadge({ tier }: { tier: Finding["tier"] }) {
+  if (tier === "Provable") return <Badge tone="brand" icon={<IconCalc className="size-3.5" />}>Provable</Badge>;
+  if (tier === "Ask") return <Badge tone="ask" icon={<IconQuestion className="size-3.5" />}>Ask about this</Badge>;
+  return <Badge tone="neutral">Contractual</Badge>;
+}
 
 export function FindingCard({ f, bill, overlapsWith, selected, onSelect }: Props) {
   const [open, setOpen] = useState(false);
+  const uid = useId();
   const dropped = f.status === "dropped";
   const debated = f.review?.state === "debated";
+  const demo = debated && isDemoFinding(f);
   const items = f.line_item_ids.map((id) => bill.items.find((i) => i.id === id)).filter((i): i is BillExtraction["items"][number] => !!i);
+  const panelId = `${uid}-panel`;
 
   return (
-    <article className={`rounded-xl border bg-white ${dropped ? "border-slate-200 opacity-80" : "border-slate-300"}`}>
-      <div className="flex items-start gap-3 p-4">
+    <article
+      aria-labelledby={`${uid}-title`}
+      className={`rounded-xl border bg-surface shadow-card transition-colors ${dropped ? "border-line bg-surface/70" : selected ? "border-brand-200" : "border-line"}`}
+    >
+      <div className="flex items-start gap-3 p-4 sm:gap-4 sm:p-5">
         {!dropped && (
-          <input
-            type="checkbox" checked={selected} onChange={(e) => onSelect(e.target.checked)}
-            className="mt-1 h-4 w-4 accent-teal-700" aria-label={`Include ${f.id} in the letter`} title="Include in the letter"
-          />
+          <label className="flex shrink-0 cursor-pointer flex-col items-center gap-1 pt-0.5">
+            <input
+              type="checkbox" checked={selected} onChange={(e) => onSelect(e.target.checked)}
+              className="size-5 cursor-pointer rounded accent-brand-700"
+              aria-label={`Include ${f.id}, ${FINDING_TITLE[f.type]}, in the letter`}
+            />
+            <span className="hidden text-[10px] font-medium uppercase tracking-wide text-ink-muted sm:block" aria-hidden>Letter</span>
+          </label>
         )}
-        <button type="button" onClick={() => setOpen(!open)} className="flex flex-1 flex-col gap-1 text-left" aria-expanded={open}>
-          <span className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="font-mono text-slate-500">{f.id}</span>
-            <span className={`rounded px-1.5 py-0.5 font-semibold ${TIER_BADGE[f.tier]}`}>{f.tier === "Ask" ? "Ask about this" : f.tier}</span>
-            {f.status === "downgraded" && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-700">downgraded from {f.initial_tier}</span>}
-            {dropped && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-700">explained by the documents</span>}
-            {!debated && <span className="rounded bg-rose-50 px-1.5 py-0.5 text-rose-800">not cross-examined</span>}
-            {f.evidence.reference_verified === false && <span className="rounded bg-amber-50 px-1.5 py-0.5 text-amber-800">illustrative reference</span>}
-            {overlapsWith && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-700">overlaps {overlapsWith}; counted once</span>}
-          </span>
-          <span className="font-semibold text-slate-900">{FINDING_TITLE[f.type]}</span>
-          <span className="text-sm text-slate-600">
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <TierBadge tier={f.tier} />
+            {f.status === "downgraded" && <Badge tone="outline">Downgraded from {f.initial_tier}</Badge>}
+            {dropped && <Badge tone="outline" icon={<IconXCircle className="size-3.5" />}>Explained by the documents</Badge>}
+            {!debated && <Badge tone="danger" icon={<IconAlert className="size-3.5" />}>Not cross-examined</Badge>}
+            {demo && <Badge tone="outline">Scripted demo review</Badge>}
+            {f.evidence.reference_verified === false && <Badge tone="caution">Illustrative reference</Badge>}
+            {overlapsWith && <Badge tone="outline">Overlaps {overlapsWith}; counted once</Badge>}
+          </div>
+          <h4 id={`${uid}-title`} className="mt-2 font-semibold text-ink">{FINDING_TITLE[f.type]}</h4>
+          <p className="mt-0.5 break-words text-sm text-ink-muted">
             {items.length ? items.map((i) => `${i.id} ${i.description_raw}`).join("; ") : "Bill totals"}
-          </span>
-        </button>
-        <div className="text-right">
-          <div className={`text-lg font-bold ${dropped ? "text-slate-400 line-through" : "text-slate-900"}`}>{formatInr(f.amount_at_stake)}</div>
-          <button type="button" onClick={() => setOpen(!open)} className="text-xs text-teal-700 underline">{open ? "Hide details" : "Details"}</button>
+          </p>
+        </div>
+
+        <div className="flex shrink-0 flex-col items-end gap-1 text-right">
+          <span className="font-mono text-xs text-ink-faint">{f.id}</span>
+          <span className={`text-lg font-semibold num sm:text-xl ${dropped ? "text-ink-faint line-through" : "text-ink"}`}>{formatInr(f.amount_at_stake)}</span>
+          {dropped && <span className="sr-only">Not counted.</span>}
         </div>
       </div>
 
-      {open && (
-        <div className="flex flex-col gap-4 border-t border-slate-200 p-4 text-sm">
-          {items.length > 0 && <LineTable items={items} />}
+      <button
+        type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls={panelId}
+        className="flex w-full items-center justify-between gap-2 border-t border-line px-4 py-2.5 text-sm font-medium text-brand-700 hover:bg-paper/60 sm:px-5"
+      >
+        <span>{open ? "Hide evidence and review" : "Show evidence and review"}</span>
+        <IconChevron className={`size-4 transition-transform ${open ? "rotate-90" : ""}`} />
+      </button>
 
-          <div className="grid gap-3 md:grid-cols-3">
-            <Column title="Finding" tone="border-teal-600">
-              <p>{f.auditor_argument}</p>
-            </Column>
-            <Column title="Hospital would say" tone="border-slate-400">
-              {debated ? (
-                <>
-                  <p>{f.defender_rebuttal.strongest_justification}</p>
-                  {f.defender_rebuttal.supporting_points.length > 0 && (
-                    <ul className="list-disc pl-4">{f.defender_rebuttal.supporting_points.map((p, i) => <li key={i}>{p}</li>)}</ul>
-                  )}
-                  <p className="text-xs text-slate-500">
-                    {f.defender_rebuttal.verifiable_from_documents ? "Supported by the documents provided." : "Not verifiable from the documents provided."}{" "}
-                    Would be confirmed by: {f.defender_rebuttal.what_would_confirm}
-                  </p>
-                </>
-              ) : (
-                <p className="text-slate-500">This finding was not cross-examined: {f.review?.note}. Its tier comes from the rule alone.</p>
-              )}
-            </Column>
-            <Column title="Our counter" tone="border-amber-500">
-              {debated ? <p>{f.counter_argument}</p> : <p className="text-slate-500">No counter was written.</p>}
-              <p className="mt-2 font-medium">Ask: {f.question_for_billing_desk}</p>
-            </Column>
+      {open && (
+        <div id={panelId} className="flex flex-col gap-5 border-t border-line p-4 text-sm sm:p-5">
+          {items.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <SectionLabel>Bill lines</SectionLabel>
+              <LineTable items={items} />
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>{demo ? "Cross-examination (precomputed demonstration, no AI model ran)" : "Cross-examination"}</SectionLabel>
+            <div className="grid gap-3 lg:grid-cols-3">
+              <Column title="Finding" who="Auditor" accent="border-t-brand-600">
+                <p>{f.auditor_argument}</p>
+              </Column>
+              <Column title="Hospital would say" who="Defender" accent="border-t-line-strong">
+                {debated ? (
+                  <>
+                    <p>{f.defender_rebuttal.strongest_justification}</p>
+                    {f.defender_rebuttal.supporting_points.length > 0 && (
+                      <ul className="list-disc pl-4">{f.defender_rebuttal.supporting_points.map((p, i) => <li key={i}>{p}</li>)}</ul>
+                    )}
+                    <p className="text-xs text-ink-muted">
+                      {f.defender_rebuttal.verifiable_from_documents ? "Supported by the documents provided." : "Not verifiable from the documents provided."}{" "}
+                      Would be confirmed by: {f.defender_rebuttal.what_would_confirm}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-ink-muted">Not cross-examined: {f.review?.note?.replace(/\.+$/, "")}. The tier comes from the rule alone.</p>
+                )}
+              </Column>
+              <Column title="Our counter" who="Judge" accent="border-t-ask-700">
+                {debated ? <p>{f.counter_argument}</p> : <p className="text-ink-muted">No counter was written.</p>}
+              </Column>
+            </div>
           </div>
 
           {debated && (
-            <p className="text-slate-700">
-              <span className="font-semibold">Judge:</span> {verdict(f)}. {f.judge_decision.rationale}
-            </p>
+            <div className="flex flex-col gap-2 rounded-lg border border-line bg-paper/60 p-3 sm:flex-row sm:items-start sm:gap-3">
+              <span className="flex items-center gap-2 font-semibold text-ink"><IconScale className="size-4 text-brand-700" /> Judge</span>
+              <Verdict f={f} />
+              <p className="min-w-0 flex-1 text-ink-soft">{f.judge_decision.rationale}</p>
+            </div>
           )}
-          {f.enforcement_notes?.map((n, i) => <p key={i} className="rounded bg-slate-50 p-2 text-xs text-slate-600">Code check: {n}</p>)}
 
-          <details>
-            <summary className="cursor-pointer font-medium text-slate-700">Evidence (computed by code)</summary>
-            <dl className="mt-2 grid grid-cols-[minmax(0,14rem)_1fr] gap-x-4 gap-y-1">
+          {!dropped && (
+            <div className="rounded-lg border border-brand-200 bg-brand-50 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-800">Ask the billing desk</p>
+              <p className="mt-1 text-ink">{f.question_for_billing_desk}</p>
+            </div>
+          )}
+
+          {f.enforcement_notes?.map((n, i) => (
+            <p key={i} className="flex gap-2 rounded-lg bg-paper-deep/70 p-3 text-xs text-ink-soft"><IconCalc className="size-4 shrink-0" /> Code check: {n}</p>
+          ))}
+
+          <details className="group rounded-lg border border-line">
+            <summary className="flex cursor-pointer items-center gap-2 p-3 font-medium text-ink-soft">
+              <IconChevron className="size-4 transition-transform group-open:rotate-90" /> Evidence computed by code
+            </summary>
+            <dl className="grid gap-x-4 gap-y-2 border-t border-line p-3 sm:grid-cols-[minmax(0,14rem)_1fr]">
               {Object.entries(f.evidence).map(([k, v]) => (
                 <div key={k} className="contents">
-                  <dt className="text-slate-500">{EVIDENCE_LABEL[k] ?? k}</dt>
-                  <dd className="text-slate-800">{fmt(k, v)}</dd>
+                  <dt className="text-ink-muted">{(demo ? EVIDENCE_LABEL[k]?.replace("(AI reading)", "(demonstration script)") : EVIDENCE_LABEL[k]) ?? k}</dt>
+                  <dd className="-mt-1.5 break-words text-ink sm:mt-0">{fmt(k, v)}</dd>
                 </div>
               ))}
             </dl>
           </details>
 
-          <div className="rounded bg-slate-50 p-3 text-xs text-slate-600">
-            <p><span className="font-semibold">Rule {f.rule_or_source_cited.rule_id}:</span> {f.rule_or_source_cited.description}</p>
-            <p><span className="font-semibold">Source:</span> {f.rule_or_source_cited.source}{f.rule_or_source_cited.benchmark_label ? ` (${f.rule_or_source_cited.benchmark_label})` : ""}</p>
-            {f.evidence.reference_verified === false && <p className="mt-1 font-semibold text-amber-800">{UNVERIFIED_REFERENCE_LABEL}</p>}
-            {f.detector === "D3_BILL_VS_SUMMARY" && <p className="mt-1">A summary is short: a missing mention is a question for the billing desk, not proof the service was not given.</p>}
-            <p className="mt-1">Amount computed by code from the printed bill{f.detector === "D2_DRUG_PRICE" ? " and the hand-curated reference table" : ""}; the AI never sets an amount.</p>
+          <div className="flex flex-col gap-1.5 rounded-lg bg-paper-deep/60 p-3 text-xs leading-relaxed text-ink-soft">
+            <p><span className="font-semibold text-ink">Rule {f.rule_or_source_cited.rule_id}:</span> {f.rule_or_source_cited.description}</p>
+            <p><span className="font-semibold text-ink">Source:</span> {f.rule_or_source_cited.source}{f.rule_or_source_cited.benchmark_label ? ` (${f.rule_or_source_cited.benchmark_label})` : ""}</p>
+            {f.evidence.reference_verified === false && <p className="font-semibold text-caution-800">{UNVERIFIED_REFERENCE_LABEL}</p>}
+            {f.detector === "D3_BILL_VS_SUMMARY" && <p>A summary is short: a missing mention is a question for the billing desk, not proof the service was not given.</p>}
+            <p>Amount computed by code from the printed bill{f.detector === "D2_DRUG_PRICE" ? " and the hand-curated reference table" : ""}; the AI never sets an amount.</p>
           </div>
         </div>
       )}
@@ -110,8 +157,11 @@ export function FindingCard({ f, bill, overlapsWith, selected, onSelect }: Props
   );
 }
 
-function verdict(f: Finding) {
-  return f.judge_decision.decision === "keep" ? "keep" : f.judge_decision.decision === "drop" ? "drop (explained)" : "ask about it";
+function Verdict({ f }: { f: Finding }) {
+  const d = f.judge_decision.decision;
+  if (d === "keep") return <Badge tone="brand" icon={<IconCheck className="size-3.5" />}>Keep</Badge>;
+  if (d === "drop") return <Badge tone="outline" icon={<IconXCircle className="size-3.5" />}>Drop (explained)</Badge>;
+  return <Badge tone="ask" icon={<IconMinus className="size-3.5" />}>Ask about it</Badge>;
 }
 
 function fmt(k: string, v: string | number | boolean) {
@@ -121,10 +171,17 @@ function fmt(k: string, v: string | number | boolean) {
   return String(v);
 }
 
-function Column({ title, tone, children }: { title: string; tone: string; children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <p className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-muted">{children}</p>;
+}
+
+function Column({ title, who, accent, children }: { title: string; who: string; accent: string; children: ReactNode }) {
   return (
-    <section className={`flex flex-col gap-2 rounded-lg border-l-4 bg-slate-50 p-3 ${tone}`}>
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</h4>
+    <section className={`flex flex-col gap-2 rounded-lg border border-line border-t-4 bg-surface p-3 leading-relaxed text-ink-soft ${accent}`}>
+      <h5 className="flex items-baseline justify-between gap-2">
+        <span className="font-semibold text-ink">{title}</span>
+        <span className="text-xs text-ink-muted">{who}</span>
+      </h5>
       {children}
     </section>
   );
@@ -132,21 +189,25 @@ function Column({ title, tone, children }: { title: string; tone: string; childr
 
 export function LineTable({ items }: { items: BillExtraction["items"] }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left text-xs">
-        <thead className="bg-slate-100 text-slate-600">
-          <tr>{["Line", "Date", "Description", "Qty", "Rate", "Amount", "Printed MRP"].map((h) => <th key={h} className="px-2 py-1 font-semibold">{h}</th>)}</tr>
+    <div className="overflow-x-auto rounded-lg border border-line">
+      <table className="w-full min-w-[40rem] text-left text-xs">
+        <thead className="bg-paper-deep/70 text-ink-muted">
+          <tr>
+            {["Line", "Date", "Description", "Qty", "Rate", "Amount", "Printed MRP"].map((h, i) => (
+              <th key={h} scope="col" className={`px-3 py-2 font-semibold ${i >= 3 ? "text-right" : ""}`}>{h}</th>
+            ))}
+          </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-line">
           {items.map((i) => (
-            <tr key={i.id} className="border-b border-slate-100">
-              <td className="px-2 py-1 font-mono">{i.id}</td>
-              <td className="px-2 py-1 whitespace-nowrap">{i.date}{i.time ? ` ${i.time}` : ""}</td>
-              <td className="px-2 py-1">{i.description_raw}</td>
-              <td className="px-2 py-1 whitespace-nowrap">{i.quantity} {i.unit ?? ""}</td>
-              <td className="px-2 py-1 whitespace-nowrap">{formatInr(i.unit_rate)}</td>
-              <td className="px-2 py-1 whitespace-nowrap">{formatInr(i.amount)}</td>
-              <td className="px-2 py-1 whitespace-nowrap">{i.printed_mrp != null ? formatInr(i.printed_mrp) : "—"}</td>
+            <tr key={i.id} className="align-top">
+              <td className="px-3 py-2 font-mono text-ink-muted">{i.id}</td>
+              <td className="whitespace-nowrap px-3 py-2">{i.date}{i.time ? ` ${i.time}` : ""}</td>
+              <td className="px-3 py-2 text-ink">{i.description_raw}</td>
+              <td className="whitespace-nowrap px-3 py-2 text-right num">{i.quantity} {i.unit ?? ""}</td>
+              <td className="whitespace-nowrap px-3 py-2 text-right num">{formatInr(i.unit_rate)}</td>
+              <td className="whitespace-nowrap px-3 py-2 text-right font-medium text-ink num">{formatInr(i.amount)}</td>
+              <td className="whitespace-nowrap px-3 py-2 text-right num">{i.printed_mrp != null ? formatInr(i.printed_mrp) : "—"}</td>
             </tr>
           ))}
         </tbody>

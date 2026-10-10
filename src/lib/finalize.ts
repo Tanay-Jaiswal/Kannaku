@@ -12,6 +12,8 @@ import { allowedTokens, cents, formatRupees } from "./money";
 import { PROMPT_VERSIONS } from "./prompts";
 import { computeTotals } from "./totals";
 import { toneViolations } from "./tone";
+import { sampleReviewSource } from "./cache";
+import { DEMO_MODEL } from "./config";
 
 export const FinalizeItem = z.object({
   candidate: Finding.pick({
@@ -37,7 +39,7 @@ export type FinalizeInput = z.infer<typeof FinalizeInput>;
 const keyOf = (rule: string, ids: string[]) => `${rule}|${ids.join(",")}`;
 
 /** Server-side re-derivation of one candidate. Returns null if it cannot be re-verified from the bill. */
-function reverify(c: FinalizeInput["items"][number]["candidate"], server: Map<string, CandidateFinding>, bill: BillExtraction): NumberedCandidate | null {
+function reverify(c: FinalizeInput["items"][number]["candidate"], server: Map<string, CandidateFinding>, bill: BillExtraction, demo: boolean): NumberedCandidate | null {
   const rule = c.rule_or_source_cited.rule_id;
   if (rule !== "D3-M2") {
     const s = server.get(keyOf(rule, c.line_item_ids));
@@ -55,7 +57,7 @@ function reverify(c: FinalizeInput["items"][number]["candidate"], server: Map<st
   };
   return {
     id: c.id, type: "MISMATCH_NOT_IN_SUMMARY", detector: "D3_BILL_VS_SUMMARY", line_item_ids: c.line_item_ids, amount_at_stake: stake,
-    rule_or_source_cited: m2Rule(c.line_item_ids), initial_tier: "Ask", confidence: c.confidence === "high" ? "high" : "medium",
+    rule_or_source_cited: m2Rule(c.line_item_ids, demo), initial_tier: "Ask", confidence: c.confidence === "high" ? "high" : "medium",
     evidence, allowed_tokens: allowedTokens(evidence, stake),
   };
 }
@@ -63,6 +65,11 @@ function reverify(c: FinalizeInput["items"][number]["candidate"], server: Map<st
 export function finalize(input: unknown, table: DrugTable) {
   const inp = FinalizeInput.parse(input);
   const { bill, summary, normalization } = inp;
+  // Who wrote the AI-stage answers. Uploads are live AI. For samples it follows the debate logs (the model id
+  // recorded on each step); with no debated finding it falls back to how this deployment serves samples.
+  const models = inp.items.flatMap((i) => (i.steps ? (i.logs ?? []).map((l) => l.model) : []));
+  const review_source = inp.data_label === "User upload" ? "live_ai"
+    : models.includes(DEMO_MODEL) ? "demonstration" : models.length ? "recorded_ai" : sampleReviewSource();
   const rules = runRules(bill, normalization, table);
   const server = new Map<string, CandidateFinding>();
   for (const c of [...rules.candidates, ...detectIcuDays(bill, summary)]) server.set(keyOf(c.rule_or_source_cited.rule_id, c.line_item_ids), c);
@@ -71,7 +78,7 @@ export function finalize(input: unknown, table: DrugTable) {
   const findings: Finding[] = [];
   const seen = new Set<string>();
   for (const item of inp.items) {
-    const c = reverify(item.candidate, server, bill);
+    const c = reverify(item.candidate, server, bill, review_source === "demonstration");
     if (!c || seen.has(c.id)) { warnings.push(`A finding (${item.candidate.id}) could not be re-verified against the bill and was removed.`); continue; }
     seen.add(c.id);
     let finding: Finding;
@@ -98,6 +105,7 @@ export function finalize(input: unknown, table: DrugTable) {
     versions: { spec: SPEC_VERSION, prompts: { ...PROMPT_VERSIONS }, table: table.table_version },
     warnings,
     clinical_check: inp.clinical_check,
+    review_source,
   });
   const tone = toneViolations(result.findings);
   if (tone.length) throw new Error(`tone lint failed on final findings: ${tone.join(",")}`);

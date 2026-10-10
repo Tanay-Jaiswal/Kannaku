@@ -1,9 +1,9 @@
 // Dispute letter (Phase 6), workflow helpers and secret handling: pure functions and file checks, no browser.
 import { describe, it, expect, beforeAll } from "vitest";
-import { readFileSync, mkdtempSync } from "node:fs";
+import { readFileSync, readdirSync, mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { buildLetter } from "../src/lib/letter";
+import { buildLetter, letterSync } from "../src/lib/letter";
 import { debateOrder, numberCandidates } from "../src/lib/flow";
 import { runPipeline } from "../src/lib/pipeline";
 import { setProviderForTests } from "../src/lib/llm/call";
@@ -80,10 +80,27 @@ describe("workflow helpers", () => {
   });
 });
 
+describe("letter stays in step with the selection", () => {
+  // Regression: an edited letter used to keep printing findings the user had since unticked.
+  it("is stale once the selection changes after an edit, and only then", () => {
+    const ids = result.findings.filter((f) => f.status !== "dropped").map((f) => f.id);
+    expect(ids.length).toBeGreaterThan(1);
+    const before = buildLetter(result, ids, { today: "2026-10-10" });
+    const after = buildLetter(result, ids.slice(1), { today: "2026-10-10" });
+    expect(letterSync(before, false, null)).toBe("generated");
+    expect(letterSync(before, true, before)).toBe("edited");
+    expect(letterSync(after, true, before)).toBe("stale");
+    expect(letterSync("", true, before)).toBe("stale"); // everything unticked after editing
+    expect(letterSync(before, true, before)).toBe("edited"); // re-ticking restores the original selection
+  });
+});
+
 describe("secret handling", () => {
   it("no client component or browser helper imports the provider SDK, the key, or Node modules", () => {
-    const files = ["src/components/AuditApp.tsx", "src/components/Results.tsx", "src/components/FindingCard.tsx", "src/components/LetterPanel.tsx",
-      "src/components/UploadBox.tsx", "src/lib/client/runAudit.ts", "src/lib/flow.ts", "src/lib/letter.ts", "src/lib/present.ts", "src/lib/totals.ts"];
+    // Every component (all of them render in the browser) plus the browser-side helpers.
+    const components = readdirSync("src/components").filter((f) => f.endsWith(".tsx")).map((f) => `src/components/${f}`);
+    expect(components.length).toBeGreaterThan(8);
+    const files = [...components, "src/lib/client/runAudit.ts", "src/lib/flow.ts", "src/lib/letter.ts", "src/lib/present.ts", "src/lib/totals.ts"];
     for (const f of files) expect(readFileSync(f, "utf8"), f).not.toMatch(/@anthropic-ai|ANTHROPIC_API_KEY|llm\/|node:fs/);
   });
   it(".env.example holds placeholders only", () => {

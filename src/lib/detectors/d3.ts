@@ -15,10 +15,11 @@ import { KanakkuError } from "../errors";
 export const M2_CATEGORIES = new Set(["procedure", "surgery", "investigation", "radiology", "blood", "physio"]);
 type ClinicalCandidate = z.infer<typeof ClinicalResult>["candidates"][number];
 
-export const m2Rule = (ids: string[]) => ({
+/** `demo`: the candidate came from the precomputed demonstration script, not an AI reading, and says so. */
+export const m2Rule = (ids: string[], demo = false) => ({
   rule_id: "D3-M2",
   description: "This billed service is not mentioned in the discharge summary. That does not mean it was not provided; ask the billing desk for the order or report that supports it.",
-  source: `Bill line(s) ${ids.join(", ")} vs discharge summary (AI-assisted reading, code-validated)`,
+  source: `Bill line(s) ${ids.join(", ")} vs discharge summary (${demo ? "precomputed demonstration reading" : "AI-assisted reading"}, code-validated)`,
   benchmark_label: "discharge summary",
 });
 
@@ -47,7 +48,7 @@ export function detectIcuDays(bill: BillExtraction, summary: DischargeSummary): 
 }
 
 /** Code validation of model candidates (SPEC D3-M2). Returns accepted candidates and why others were discarded. */
-export function validateClinical(bill: BillExtraction, result: z.infer<typeof ClinicalResult>) {
+export function validateClinical(bill: BillExtraction, result: z.infer<typeof ClinicalResult>, opts: { demo?: boolean } = {}) {
   const byId = new Map(bill.items.map((i) => [i.id, i]));
   const used = new Set<string>();
   const accepted: { c: ClinicalCandidate; findings: CandidateFinding }[] = [];
@@ -72,7 +73,7 @@ export function validateClinical(bill: BillExtraction, result: z.infer<typeof Cl
       c,
       findings: {
         type: "MISMATCH_NOT_IN_SUMMARY", detector: "D3_BILL_VS_SUMMARY", line_item_ids: c.line_item_ids, amount_at_stake: stake,
-        rule_or_source_cited: m2Rule(c.line_item_ids),
+        rule_or_source_cited: m2Rule(c.line_item_ids, opts.demo),
         initial_tier: "Ask", confidence: c.confidence === "high" ? "high" : "medium", evidence, allowed_tokens: allowedTokens(evidence, stake),
       },
     });
@@ -112,6 +113,6 @@ async function clinicalModel(bill: BillExtraction, summary: DischargeSummary, ct
       ...numberGuardViolations(out, tokensFrom([]), { checkPercent: false }).map((n) => `rupee figure "${n}" is not allowed in this step`),
     ],
   });
-  const m2 = validateClinical(bill, r.output);
+  const m2 = validateClinical(bill, r.output, { demo: ctx.mode === "demo" });
   return { candidates: m2.candidates, discarded: m2.discarded, meta: { prompt_version: r.promptVersion, model: r.model, cached: r.cached } };
 }

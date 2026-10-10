@@ -3,7 +3,8 @@
 // validation error -> second failure throws MODEL_OUTPUT_INVALID. Only validated outputs are cached.
 import type Anthropic from "@anthropic-ai/sdk";
 import type { z } from "zod";
-import { cacheOnly } from "../config";
+import { DEMO_MODEL, cacheOnly } from "../config";
+import { demoAnswer } from "../demo";
 import { KanakkuError } from "../errors";
 import { limits } from "../limits";
 import { cacheKey, readCache, readSampleManifest, writeCache } from "../cache";
@@ -23,9 +24,10 @@ function provider(): LlmProvider {
 }
 
 export function modelFor(kind: "extract" | "reason", mode: RunContext["mode"] = "live"): string {
+  if (mode === "demo") return DEMO_MODEL;
   if (mode === "sample") {
     const m = readSampleManifest();
-    if (!m) throw new KanakkuError("CACHE_MISS", "The built-in samples have not been prepared on this deployment yet (no saved AI review). The site owner can generate it with `npm run warm-samples`.", "cache/manifest.json missing");
+    if (!m) throw new KanakkuError("CACHE_MISS", "No recorded AI review for the sample bills is deployed here, so this step did not run.", "cache/manifest.json missing");
     return kind === "extract" ? m.extract_model : m.reason_model;
   }
   const name = kind === "extract" ? "MODEL_EXTRACT" : "MODEL_REASON";
@@ -57,6 +59,16 @@ export async function callJson<T>(a: CallJsonArgs<T>): Promise<CallJsonResult<T>
   const model = modelFor(a.modelKind, a.ctx.mode);
   const key = cacheKey(a.stage, version, model, a.keyInput);
 
+  // Precomputed demonstration (synthetic samples only): a scripted answer instead of a model, never cached,
+  // never sent anywhere, and validated exactly like a model answer. A script that fails the checks fails loudly.
+  if (a.ctx.mode === "demo") {
+    if (!a.ctx.sampleId) throw new KanakkuError("BAD_INPUT", "The demonstration review only covers the built-in sample documents.", "demo without sampleId");
+    const checked = validate(JSON.stringify(demoAnswer(a.stage, a.ctx.sampleId, JSON.parse(a.userText))), "end_turn", a);
+    if (!checked.ok)
+      throw new KanakkuError("MODEL_OUTPUT_INVALID", "The demonstration review for this sample failed Kanakku's checks, so it was not used.", `demo stage=${a.stage}: ${checked.reason}`);
+    return { output: checked.value, promptVersion: version, model, cacheKey: key, cached: false };
+  }
+
   const hit = readCache(a.stage, key);
   if (hit) {
     // Cached outputs are re-validated: a stale or hand-edited file can never inject an unchecked value.
@@ -67,7 +79,7 @@ export async function callJson<T>(a: CallJsonArgs<T>): Promise<CallJsonResult<T>
 
   if (a.ctx.mode === "sample")
     throw new KanakkuError("CACHE_MISS",
-      "This sample has no saved AI review for the configured models yet, so it was not run live (samples never spend API credit). The site owner can generate it with `npm run warm-samples`.",
+      "The recorded AI review for this sample is incomplete on this deployment, so this step did not run. Sample bills never call the AI live or spend API credit.",
       `stage=${a.stage}`);
   if (a.ctx.mode === "live" && cacheOnly())
     throw new KanakkuError("LIVE_DISABLED",

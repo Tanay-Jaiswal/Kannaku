@@ -274,6 +274,9 @@ export const PipelineResult = z.object({
   // Phase 4/5 (additive): plain-language notes about anything that limited this audit.
   warnings: z.array(z.string()).optional(),
   clinical_check: z.object({ state: z.enum(["done", "failed"]), note: z.string() }).optional(),
+  // Who wrote the AI-stage answers (set by the server in finalize): a live model call (uploads), a recorded AI
+  // review replayed from the committed sample cache, or the precomputed demonstration script (no AI ran).
+  review_source: z.enum(["live_ai", "recorded_ai", "demonstration"]).optional(),
 });
 export type PipelineResult = z.infer<typeof PipelineResult>;
 

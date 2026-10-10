@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { SAMPLE_BILL_IDS } from "../src/lib/config";
+import { sampleReviewSource } from "../src/lib/cache";
 import { runPipeline } from "../src/lib/pipeline";
 import { loadSample } from "../src/lib/samples";
 import { referenceTable } from "../src/lib/table";
@@ -37,10 +38,14 @@ export function evaluate(dir: string, r: PipelineResult): Row {
 
 async function main() {
   const rows: Row[] = [];
+  const source = sampleReviewSource();
+  console.log(source === "recorded_ai"
+    ? "Evaluating the RECORDED AI review replayed from cache/ (no network)."
+    : "No recorded AI review in cache/: evaluating the PRECOMPUTED DEMONSTRATION. This checks the pipeline wiring on synthetic data; it is not a measure of AI quality.");
   for (const dir of SAMPLE_BILL_IDS) {
     const s = loadSample(dir);
     const r = await runPipeline({ billDraft: s.bill_draft, summaryDraft: s.summary_draft, dataLabel: "Synthetic data", table: referenceTable,
-      ctx: { runId: `eval-${dir}`, clientId: "eval", mode: "sample" } });
+      ctx: { runId: `eval-${dir}`, clientId: "eval", mode: source === "recorded_ai" ? "sample" : "demo", sampleId: dir } });
     rows.push(evaluate(dir, r));
     if (r.warnings?.length || r.clinical_check?.state === "failed") console.log(`${dir}: ${[...(r.warnings ?? []), r.clinical_check?.state === "failed" ? r.clinical_check.note : ""].filter(Boolean).join(" | ")}`);
   }

@@ -61,6 +61,12 @@ export const models = {
  */
 export const cacheOnly = () => process.env.KANAKKU_CACHE_ONLY !== "0";
 
+/**
+ * Model id recorded on every answer produced by the precomputed demonstration script (src/lib/demo.ts) instead
+ * of an AI model. Browser-safe, so the UI can label those answers as a demonstration, never as live AI.
+ */
+export const DEMO_MODEL = "kanakku-demonstration-script";
+
 /** IDs of the built-in demo bills. These always run from the committed cache, never live (SPEC 0.7). */
 export const SAMPLE_BILL_IDS = ["bill-01-clean", "bill-02-demo", "bill-03-errors"] as const;
 

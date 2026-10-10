@@ -9,8 +9,14 @@ export type RunContext = {
   runId: string;
   /** Best-effort client identity (first x-forwarded-for hop, or "local"). */
   clientId: string;
-  /** sample = cache only; live = may call the provider (uploads); warm = script filling the sample cache. */
-  mode: "sample" | "live" | "warm";
+  /**
+   * sample = replay the recorded AI review from the committed cache only; demo = precomputed demonstration
+   * script, no model call (samples on a deployment with no recorded review); live = may call the provider
+   * (uploads); warm = script filling the sample cache.
+   */
+  mode: "sample" | "demo" | "live" | "warm";
+  /** Built-in sample being run (sample and demo modes). */
+  sampleId?: string;
 };
 
 type Run = { clientId: string; calls: number; tokens: number; startedAt: number };

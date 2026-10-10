@@ -48,3 +48,17 @@ export function buildLetter(result: PipelineResult, selectedIds: string[], opts:
   );
   return lines.join("\n");
 }
+
+/**
+ * Whether the letter text on screen still matches the selected findings.
+ * - "generated": the user has not edited; the text is rebuilt whenever the selection changes.
+ * - "edited": the user edited a letter built from the current selection.
+ * - "stale": the user edited, then changed the selection, so the text may name findings that are no longer
+ *   selected (or miss new ones) and its total may not match. The UI must not print a stale letter.
+ * `basis` is the generated text the user's edits started from.
+ */
+export type LetterSync = "generated" | "edited" | "stale";
+export function letterSync(generated: string, edited: boolean, basis: string | null): LetterSync {
+  if (!edited) return "generated";
+  return basis === generated ? "edited" : "stale";
+}
